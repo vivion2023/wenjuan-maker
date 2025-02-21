@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import List from "../pages/List.vue";
-import Star from "../pages/Star.vue";
+import List from "../pages/manager/List.vue";
+import Star from "../pages/manager/Star.vue";
 
 // 配置映射关系
 const routers = [

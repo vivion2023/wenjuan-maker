@@ -9,12 +9,17 @@
       </keep-alive>
     </router-view>
   </div>
+  <lunbo />
 </template>
 
 <script>
 import { useRouter } from "vue-router";
+import lunbo from "./components/lunbo.vue";
 export default {
   name: "App",
+  components: {
+    lunbo,
+  },
   setup() {
     const router = useRouter();
     return {
