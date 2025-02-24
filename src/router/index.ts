@@ -1,27 +1,79 @@
 import { createRouter, createWebHistory } from "vue-router";
-import List from "../pages/manager/List.vue";
-import Star from "../pages/manager/Star.vue";
+import ManageLayout from "../layouts/ManageLayout.vue";
+import MainLayout from "../layouts/MainLayout.vue";
+import QuestionLayout from "../layouts/QuestionLayout.vue";
+import Home from "@/pages/Home.vue";
+import Login from "@/pages/Login.vue";
+import Register from "@/pages/Register.vue";
+import NotFound from "@/pages/NotFound.vue";
+import List from "@/pages/manager/List.vue";
+import Star from "@/pages/manager/Star.vue";
+import Trash from "@/pages/manager/Trash.vue";
+import Edit from "@/pages/question/Edit/index.vue";
+import Stat from "@/pages/question/Stat/index.vue";
 
 // 配置映射关系
-const routers = [
+const routes = [
   {
     path: "/",
-    redirect: "/list",
+    component: MainLayout,
+    children: [
+      {
+        path: "",
+        component: Home,
+      },
+      {
+        path: "login",
+        component: Login,
+      },
+      {
+        path: "register",
+        component: Register,
+      },
+      {
+        path: "manager",
+        component: ManageLayout,
+        children: [
+          {
+            path: "list",
+            component: List,
+          },
+          {
+            path: "star",
+            component: Star,
+          },
+          {
+            path: "trash",
+            component: Trash,
+          },
+        ],
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        component: NotFound,
+      },
+    ],
   },
   {
-    path: "/list",
-    component: List,
-  },
-  {
-    path: "/star",
-    component: Star,
+    path: "/question",
+    component: QuestionLayout,
+    children: [
+      {
+        path: "edit/:id",
+        component: Edit,
+      },
+      {
+        path: "stat/:id",
+        component: Stat,
+      },
+    ],
   },
 ];
 
 // 创建一个路由对象
 const router = createRouter({
   history: createWebHistory(),
-  routes: routers,
+  routes: routes,
 });
 
 export default router;

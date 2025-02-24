@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h2>404 NotFound</h2>
-  </div>
+  <div>Question Layout</div>
+  <div>插槽</div>
 </template>
 
 <script>
