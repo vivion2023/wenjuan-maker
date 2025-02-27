@@ -35,6 +35,10 @@ const routes = [
         component: ManageLayout,
         children: [
           {
+            path: "",
+            redirect: "/manager/list",
+          },
+          {
             path: "list",
             component: List,
           },

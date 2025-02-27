@@ -11,7 +11,11 @@
       <a href="/manager/trash">回收站</a>
     </div>
     <div class="right">
-      <h2>插槽</h2>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </div>
   </div>
 </template>
