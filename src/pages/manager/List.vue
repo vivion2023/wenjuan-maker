@@ -17,9 +17,14 @@
 
 <script>
 import { useStore } from "vuex";
+// import { useRoute } from "vue-router";
 import { computed } from "vue";
 export default {
   setup() {
+    // const route = useRoute();
+    // const keyword = route.query.keyword;
+    // console.log("keyword", keyword);
+
     const store = useStore();
     const questionList = computed(() => store.state.questionList);
     const add = () => {
