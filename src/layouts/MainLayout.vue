@@ -4,7 +4,7 @@
       <Logo class="left"></Logo>
       <UserInfo class="right"></UserInfo>
     </LayoutHeader>
-    <LayoutContent class="content">
+    <LayoutContent class="main">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />

@@ -1,14 +1,18 @@
 <template>
   <div class="user-info">
-    <a @click="login">登录</a>
+    <a @click="() => router.push('/login')">登录</a>
   </div>
 </template>
 
-<script setup lang="ts">
+<script>
 import { useRouter } from "vue-router";
-const router = useRouter();
-const login = () => {
-  router.push("/login");
+export default {
+  setup() {
+    const router = useRouter();
+    return {
+      router,
+    };
+  },
 };
 </script>
 
