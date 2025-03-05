@@ -1,6 +1,10 @@
 <template>
   <Layout>
-    <LayoutHeader class="header">MainLayout header</LayoutHeader>
+    <LayoutHeader class="header">
+      <div>
+        <Logo></Logo>
+      </div>
+    </LayoutHeader>
     <LayoutContent class="content">
       <router-view v-slot="{ Component }">
         <keep-alive>
@@ -9,7 +13,7 @@
       </router-view>
     </LayoutContent>
     <LayoutFooter class="footer">
-      zono问卷项目&copy;2024.2 - present. Created by zono
+      vivion问卷项目&copy;2024.2 - present. Created by vivion
     </LayoutFooter>
   </Layout>
 </template>
@@ -21,9 +25,10 @@ import {
   LayoutContent,
   LayoutFooter,
 } from "ant-design-vue";
+import Logo from "@/components/Logo.vue";
 
 export default {
-  components: { Layout, LayoutHeader, LayoutContent, LayoutFooter },
+  components: { Layout, LayoutHeader, LayoutContent, LayoutFooter, Logo },
 };
 </script>
 
