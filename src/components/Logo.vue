@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @click="handleClick">
+  <div class="container" @click="router.push(HOME_PATHNAME)">
     <Space>
       <Title>
         <FormOutlined />
@@ -22,10 +22,7 @@ export default defineComponent({
   components: { FormOutlined, Space, Title },
   setup() {
     const router = useRouter();
-    const handleClick = () => {
-      router.push(HOME_PATHNAME);
-    };
-    return { handleClick };
+    return { router, HOME_PATHNAME };
   },
 });
 </script>

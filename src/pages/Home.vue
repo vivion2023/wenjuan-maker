@@ -1,21 +1,39 @@
 <template>
-  <div>
-    <h2>Home</h2>
-    <button @click="() => router.push('/login')">登录</button>
+  <div class="container">
+    <div class="info">
+      <Title>问卷调查</Title>
+      <Paragraph>已累计创建问卷100份，发布问卷90份，收到答卷900份</Paragraph>
+      <div>
+        <Button
+          type="primary"
+          @click="() => router.push(MANAGER_INDEX_PATHNAME)"
+        >
+          开始使用
+        </Button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { Button, Typography } from "ant-design-vue";
 import { useRouter } from "vue-router";
+import { MANAGER_INDEX_PATHNAME } from "@/router";
+const { Title, Paragraph } = Typography;
+
 export default {
-  name: "Home",
+  components: {
+    Title,
+    Paragraph,
+    Button,
+  },
   setup() {
     const router = useRouter();
-    return {
-      router,
-    };
+    return { router, MANAGER_INDEX_PATHNAME };
   },
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "./Home.module.scss";
+</style>
