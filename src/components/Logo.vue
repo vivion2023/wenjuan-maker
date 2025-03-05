@@ -1,24 +1,26 @@
 <template>
-  <div class="logo">
-    <FormOutlined />
-    <span>vivon 问卷</span>
+  <div class="container">
+    <Space>
+      <Title>
+        <FormOutlined />
+      </Title>
+      <Title>vivon 问卷</Title>
+    </Space>
   </div>
 </template>
 
 <script>
 import { FormOutlined } from "@ant-design/icons-vue";
+import { Space, Typography } from "ant-design-vue";
 import { defineComponent } from "vue";
+
+const Title = Typography.Title;
+
 export default defineComponent({
-  components: { FormOutlined },
+  components: { FormOutlined, Space, Title },
 });
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  display: inline-block;
-  gap: 10px;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-}
+@import "./Logo.module.scss";
 </style>
