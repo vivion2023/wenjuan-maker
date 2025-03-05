@@ -15,7 +15,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .logo {
-  display: flex;
+  display: inline-block;
   gap: 10px;
   align-items: center;
   font-size: 20px;

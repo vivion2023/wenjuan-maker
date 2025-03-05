@@ -1,9 +1,8 @@
 <template>
   <Layout>
     <LayoutHeader class="header">
-      <div>
-        <Logo></Logo>
-      </div>
+      <Logo class="left"></Logo>
+      <UserInfo class="right"></UserInfo>
     </LayoutHeader>
     <LayoutContent class="content">
       <router-view v-slot="{ Component }">
@@ -26,9 +25,17 @@ import {
   LayoutFooter,
 } from "ant-design-vue";
 import Logo from "@/components/Logo.vue";
+import UserInfo from "@/components/UserInfo.vue";
 
 export default {
-  components: { Layout, LayoutHeader, LayoutContent, LayoutFooter, Logo },
+  components: {
+    Layout,
+    LayoutHeader,
+    LayoutContent,
+    LayoutFooter,
+    Logo,
+    UserInfo,
+  },
 };
 </script>
 
