@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h1>问卷列表页</h1>
+    <div class="header">
+      <div class="left">
+        <Title :level="2" style="margin-top: 0">我的问卷</Title>
+      </div>
+      <div class="right">
+        <ListSearch />
+      </div>
+    </div>
     <div v-for="question in questionList" :key="question.id" class="list-item">
       <strong>{{ question.title }}</strong>
       &nbsp;
@@ -17,14 +24,13 @@
 
 <script>
 import { useStore } from "vuex";
-// import { useRoute } from "vue-router";
 import { computed } from "vue";
+import ListSearch from "@/components/ListSearch.vue";
+import { Typography } from "ant-design-vue";
+const Title = Typography.Title;
 export default {
+  components: { ListSearch, Title },
   setup() {
-    // const route = useRoute();
-    // const keyword = route.query.keyword;
-    // console.log("keyword", keyword);
-
     const store = useStore();
     const questionList = computed(() => store.state.questionList);
     const add = () => {
@@ -41,11 +47,12 @@ export default {
       edit,
       add,
       move,
+      Title,
     };
   },
 };
 </script>
 
-<style scoped lang="scss">
-@import "./List.module.scss";
+<style lang="scss" scoped>
+@import "./common.module.scss";
 </style>
