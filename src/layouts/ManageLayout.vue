@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { Button, Space, Divider } from "ant-design-vue";
 import { h } from "vue";
 import {

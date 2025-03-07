@@ -69,6 +69,10 @@ const store = createStore({
       const index = state.questionList.findIndex((q) => q.id === id);
       state.questionList.splice(index, 1);
     },
+    updateQuestionList(state, id) {
+      const index = state.questionList.findIndex((q) => q.id === id);
+      state.questionList[index].isStar = !state.questionList[index].isStar;
+    },
   },
 });
 

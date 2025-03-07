@@ -8,17 +8,7 @@
         <ListSearch />
       </div>
     </div>
-    <div v-for="question in questionList" :key="question.id" class="list-item">
-      <strong>{{ question.title }}</strong>
-      &nbsp;
-      <span :style="{ color: question.isPublished ? 'green' : 'black' }">
-        {{ question.isPublished ? "已发布" : "未发布" }}
-      </span>
-      &nbsp;
-      <button @click="edit(question.id)">编辑问卷</button>
-      <button @click="move(question.id)">删除问卷</button>
-    </div>
-    <button @click="add">添加问卷</button>
+    <QuestionCard />
   </div>
 </template>
 
@@ -28,8 +18,9 @@ import { computed } from "vue";
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography } from "ant-design-vue";
 const Title = Typography.Title;
+import QuestionCard from "@/components/QuestionCard.vue";
 export default {
-  components: { ListSearch, Title },
+  components: { ListSearch, Title, QuestionCard },
   setup() {
     const store = useStore();
     const questionList = computed(() => store.state.questionList);
@@ -47,7 +38,6 @@ export default {
       edit,
       add,
       move,
-      Title,
     };
   },
 };
