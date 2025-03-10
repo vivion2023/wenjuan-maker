@@ -8,38 +8,34 @@
         <ListSearch />
       </div>
     </div>
-    <QuestionCard />
+    <QuestionCard :questionList="questionList" />
   </div>
 </template>
 
-<script>
+<script setup>
 import { useStore } from "vuex";
 import { computed } from "vue";
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography } from "ant-design-vue";
-const Title = Typography.Title;
 import QuestionCard from "@/components/QuestionCard.vue";
-export default {
-  components: { ListSearch, Title, QuestionCard },
-  setup() {
-    const store = useStore();
-    const questionList = computed(() => store.state.questionList);
-    const add = () => {
-      store.commit("addQuestion");
-    };
-    const edit = (id) => {
-      console.log("编辑问卷 ID:", id);
-    };
-    const move = (id) => {
-      store.commit("moveQuestion", id);
-    };
-    return {
-      questionList,
-      edit,
-      add,
-      move,
-    };
-  },
+
+const Title = Typography.Title;
+const store = useStore();
+
+// computed 属性
+const questionList = computed(() => store.state.questionList);
+
+// 方法定义
+const add = () => {
+  store.commit("addQuestion");
+};
+
+const edit = (id) => {
+  console.log("编辑问卷 ID:", id);
+};
+
+const move = (id) => {
+  store.commit("moveQuestion", id);
 };
 </script>
 
