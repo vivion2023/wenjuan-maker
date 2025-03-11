@@ -59,7 +59,13 @@ import { h } from "vue";
 
 const { Text, Link } = Typography;
 const store = useStore();
-const questionList = store.state.questionList;
+
+const props = defineProps({
+  questionList: {
+    type: Array,
+    required: true,
+  },
+});
 
 const handleStar = (id) => {
   store.commit("updateQuestionList", id);

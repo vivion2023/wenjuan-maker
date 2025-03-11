@@ -9,6 +9,7 @@ const store = createStore({
           title: "问卷1",
           isPublished: false,
           isStar: false,
+          isDeleted: false,
           answerCount: 5,
           createdAt: "3月10日 13:23",
         },
@@ -17,6 +18,7 @@ const store = createStore({
           title: "问卷2",
           isPublished: true,
           isStar: true,
+          isDeleted: false,
           answerCount: 3,
           createdAt: "3月11日 13:23",
         },
@@ -25,6 +27,7 @@ const store = createStore({
           title: "问卷3",
           isPublished: false,
           isStar: false,
+          isDeleted: false,
           answerCount: 6,
           createdAt: "3月12日 13:23",
         },
@@ -33,6 +36,7 @@ const store = createStore({
           title: "问卷4",
           isPublished: false,
           isStar: false,
+          isDeleted: false,
           answerCount: 6,
           createdAt: "3月12日 13:23",
         },
@@ -46,6 +50,7 @@ const store = createStore({
         title: "问卷" + (state.questionList.length + 1),
         isPublished: false,
         isStar: false,
+        isDeleted: false,
         answerCount: 0,
         createdAt: new Date()
           .toLocaleString("zh-CN", {
@@ -60,12 +65,6 @@ const store = createStore({
       state.questionList.push(newQuestion);
     },
     moveQuestion(state, id) {
-      // const index = state.questionList.findIndex(
-      //   (question) => question.id === id
-      // );
-      // if (index !== -1) {
-      //   state.questionList.splice(index, 1);
-      // }
       const index = state.questionList.findIndex((q) => q.id === id);
       state.questionList.splice(index, 1);
     },

@@ -20,5 +20,6 @@ export default {
 .user-info {
   display: inline-block;
   align-items: center;
+  padding: 0 24px;
 }
 </style>
