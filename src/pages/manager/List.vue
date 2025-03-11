@@ -24,7 +24,9 @@ const Title = Typography.Title;
 const store = useStore();
 
 // computed 属性
-const questionList = computed(() => store.state.questionList);
+const questionList = computed(() =>
+  store.state.questionList.filter((question) => !question.isDeleted)
+);
 
 // 方法定义
 const add = () => {

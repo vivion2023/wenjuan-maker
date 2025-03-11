@@ -29,7 +29,9 @@ const Title = Typography.Title;
 
 const store = useStore();
 const starQuestionList = computed(() =>
-  store.state.questionList.filter((question) => question.isStar)
+  store.state.questionList.filter(
+    (question) => question.isStar && !question.isDeleted
+  )
 );
 const add = () => {
   store.commit("addQuestion");

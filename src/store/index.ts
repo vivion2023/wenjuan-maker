@@ -66,6 +66,11 @@ const store = createStore({
     },
     moveQuestion(state, id) {
       const index = state.questionList.findIndex((q) => q.id === id);
+      state.questionList[index].isDeleted =
+        !state.questionList[index].isDeleted;
+    },
+    deleteQuestion(state, id) {
+      const index = state.questionList.findIndex((q) => q.id === id);
       state.questionList.splice(index, 1);
     },
     updateQuestionList(state, id) {

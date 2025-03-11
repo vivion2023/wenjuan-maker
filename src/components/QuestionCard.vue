@@ -37,7 +37,7 @@
         <Button
           type="text"
           :icon="h(DeleteOutlined)"
-          @click="handleDelete(question.id)"
+          @click="handleMove(question.id)"
           >删除</Button
         >
       </div>
@@ -71,7 +71,7 @@ const handleStar = (id) => {
   store.commit("updateQuestionList", id);
 };
 
-const handleDelete = (id) => {
+const handleMove = (id) => {
   store.commit("moveQuestion", id);
 };
 </script>
