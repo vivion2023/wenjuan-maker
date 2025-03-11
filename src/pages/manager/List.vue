@@ -8,7 +8,8 @@
         <ListSearch />
       </div>
     </div>
-    <QuestionCard :questionList="questionList" />
+    <QuestionCard v-if="questionList.length" :questionList="questionList" />
+    <div v-else class="empty-text">暂无数据</div>
   </div>
 </template>
 

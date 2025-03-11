@@ -1,9 +1,3 @@
-.list-item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 16px;
-}
-
 // 共用样式
 .header {
   display: flex;
@@ -25,4 +19,10 @@
 
 .footer {
   text-align: center;
+}
+
+.empty-text {
+  text-align: center;
+  padding: 24px;
+  color: #999;
 }
