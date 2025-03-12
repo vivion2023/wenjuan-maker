@@ -50,8 +50,8 @@
 <script setup>
 import { useStore } from "vuex";
 import ListSearch from "@/components/ListSearch.vue";
-import { Typography, Button, Space, Table } from "ant-design-vue";
-import { computed, ref } from "vue";
+import { Typography, Button, Space, Table, Tag } from "ant-design-vue";
+import { computed, ref, h } from "vue";
 import QuestionCard from "@/components/QuestionCard.vue";
 
 const Title = Typography.Title;
@@ -72,7 +72,15 @@ const columns = ref([
     title: "是否发布",
     dataIndex: "isPublished",
     key: "isPublished",
-    customRender: ({ text }) => (text ? "已发布" : "未发布"),
+    customRender: ({ text }) => {
+      return h(
+        Tag,
+        {
+          color: text ? "success" : "default",
+        },
+        () => (text ? "已发布" : "未发布")
+      );
+    },
   },
   {
     title: "答卷",
@@ -86,10 +94,10 @@ const columns = ref([
   },
 ]);
 
-// 选中的行
+// 存储选中的行
 const selectedRowKeys = ref([]);
 
-// 修改 rowSelection 的定义方式
+// 勾选框选中逻辑
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
@@ -97,12 +105,12 @@ const rowSelection = computed(() => ({
   },
 }));
 
-// 处理恢复操作
+// 恢复操作
 const handleRestore = () => {
   store.commit("moveQuestion", selectedRowKeys.value);
 };
 
-// 处理删除操作
+// 彻底删除操作
 const handleDelete = () => {
   store.commit("deleteQuestion", selectedRowKeys.value);
 };

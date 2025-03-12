@@ -68,7 +68,7 @@ const props = defineProps({
 });
 
 const handleStar = (id) => {
-  store.commit("updateQuestionList", id);
+  store.commit("starQuestionList", id);
 };
 
 const handleMove = (id) => {

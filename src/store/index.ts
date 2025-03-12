@@ -44,6 +44,7 @@ const store = createStore({
     };
   },
   mutations: {
+    // 添加问卷
     addQuestion(state) {
       const newQuestion = {
         id: "q" + (state.questionList.length + 1),
@@ -64,6 +65,7 @@ const store = createStore({
       };
       state.questionList.push(newQuestion);
     },
+    // 移动问卷
     moveQuestion(state, ids) {
       ids.forEach((id: string) => {
         const index = state.questionList.findIndex((q) => q.id === id);
@@ -73,13 +75,15 @@ const store = createStore({
         }
       });
     },
+    // 彻底删除问卷
     deleteQuestion(state, ids) {
       ids.forEach((id: string) => {
         const index = state.questionList.findIndex((q) => q.id === id);
         state.questionList.splice(index, 1);
       });
     },
-    updateQuestionList(state, id) {
+    // 更新问卷标星状态
+    starQuestionList(state, id) {
       const index = state.questionList.findIndex((q) => q.id === id);
       state.questionList[index].isStar = !state.questionList[index].isStar;
     },

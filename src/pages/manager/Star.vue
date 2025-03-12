@@ -33,14 +33,9 @@ const starQuestionList = computed(() =>
     (question) => question.isStar && !question.isDeleted
   )
 );
-const add = () => {
-  store.commit("addQuestion");
-};
+
 const edit = (id) => {
   console.log("编辑问卷 ID:", id);
-};
-const move = (id) => {
-  store.commit("moveQuestion", id);
 };
 </script>
 
