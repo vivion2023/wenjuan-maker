@@ -64,14 +64,20 @@ const store = createStore({
       };
       state.questionList.push(newQuestion);
     },
-    moveQuestion(state, id) {
-      const index = state.questionList.findIndex((q) => q.id === id);
-      state.questionList[index].isDeleted =
-        !state.questionList[index].isDeleted;
+    moveQuestion(state, ids) {
+      ids.forEach((id: string) => {
+        const index = state.questionList.findIndex((q) => q.id === id);
+        if (index !== -1) {
+          state.questionList[index].isDeleted =
+            !state.questionList[index].isDeleted;
+        }
+      });
     },
-    deleteQuestion(state, id) {
-      const index = state.questionList.findIndex((q) => q.id === id);
-      state.questionList.splice(index, 1);
+    deleteQuestion(state, ids) {
+      ids.forEach((id: string) => {
+        const index = state.questionList.findIndex((q) => q.id === id);
+        state.questionList.splice(index, 1);
+      });
     },
     updateQuestionList(state, id) {
       const index = state.questionList.findIndex((q) => q.id === id);

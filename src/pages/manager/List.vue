@@ -36,10 +36,6 @@ const add = () => {
 const edit = (id) => {
   console.log("编辑问卷 ID:", id);
 };
-
-const move = (id) => {
-  store.commit("moveQuestion", id);
-};
 </script>
 
 <style lang="scss" scoped>

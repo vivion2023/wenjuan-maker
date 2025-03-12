@@ -72,7 +72,7 @@ const handleStar = (id) => {
 };
 
 const handleMove = (id) => {
-  store.commit("moveQuestion", id);
+  store.commit("moveQuestion", [id]);
 };
 </script>
 
