@@ -27,5 +27,5 @@ const router = useRouter();
 </script>
 
 <style lang="scss" scoped>
-@import "./Home.module.scss";
+@use "./Home.module.scss" as *;
 </style>

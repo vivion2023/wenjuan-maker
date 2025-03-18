@@ -55,5 +55,5 @@ const router = useRouter();
 </script>
 
 <style lang="scss" scoped>
-@import "./ManageLayout.module.scss";
+@use "./ManageLayout.module.scss" as *;
 </style>

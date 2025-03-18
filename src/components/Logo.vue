@@ -28,5 +28,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "./Logo.module.scss";
+@use "./Logo.module.scss" as *;
 </style>

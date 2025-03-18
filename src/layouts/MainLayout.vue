@@ -40,5 +40,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "./MainLayout.module.scss";
+@use "./MainLayout.module.scss" as *;
 </style>

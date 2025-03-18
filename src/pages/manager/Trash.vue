@@ -117,5 +117,5 @@ const handleDelete = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "./common.module.scss";
+@use "./common.module.scss" as *;
 </style>
