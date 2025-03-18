@@ -5,7 +5,7 @@
         <Title :level="2" style="margin-top: 0">我的问卷</Title>
       </div>
       <div class="right">
-        <ListSearch />
+        <ListSearch @search="onSearch" />
       </div>
     </div>
     <div class="content">
@@ -22,13 +22,13 @@
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography, Spin } from "ant-design-vue";
 import QuestionCard from "@/components/QuestionCard.vue";
-import { getQuestionListService } from "@/services/question";
-import { useRequest } from "@/hooks/useRequest";
+import { useLoadQuestionListData } from "@/hooks/useLoadQuestionListData";
 import { onMounted, computed } from "vue";
 const Title = Typography.Title;
 
 // 获取问卷列表
-const { data, loading, error, run } = useRequest(getQuestionListService);
+const { data, loading, error, run, updateSearchParams } =
+  useLoadQuestionListData();
 // 使用计算属性处理数据
 const list = computed(() => data.value?.List || []);
 const total = computed(() => data.value?.total || 0);
@@ -36,6 +36,11 @@ const total = computed(() => data.value?.total || 0);
 onMounted(async () => {
   await run();
 });
+
+// 搜索方法 - 使用 updateSearchParams
+const onSearch = (keyword) => {
+  updateSearchParams(keyword);
+};
 
 // 方法定义
 const add = () => {
