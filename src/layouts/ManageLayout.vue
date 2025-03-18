@@ -6,7 +6,7 @@
           type="primary"
           size="large"
           :icon="h(PlusOutlined)"
-          :loading="loading"
+          :disabled="loading"
           @click="handleCreateClick"
           >创建问卷</Button
         >
@@ -46,8 +46,8 @@
 </template>
 
 <script setup>
-import { Button, Space, Divider } from "ant-design-vue";
-import { h } from "vue";
+import { Button, Space, Divider, message } from "ant-design-vue";
+import { h, ref } from "vue";
 import {
   PlusOutlined,
   BarsOutlined,
@@ -55,22 +55,28 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
+import { createQuestionService } from "@/services/question";
+
 const router = useRouter();
 
-// 创建问卷
-import { createQuestionService } from "@/services/question";
-import { message } from "ant-design-vue";
-import { ref } from "vue";
+// 使用 ref 定义响应式变量
 const loading = ref(false);
+
 const handleCreateClick = async () => {
   loading.value = true;
-  const data = await createQuestionService();
-  const { id } = data || {};
-  if (id) {
-    router.push(`/question/edit/${id}`);
-    message.success("创建成功");
+  try {
+    const data = await createQuestionService();
+    const { id } = data || {};
+    if (id) {
+      router.push(`/question/edit/${id}`);
+      message.success("创建成功");
+    }
+  } catch (error) {
+    console.error("创建问卷失败", error);
+    message.error("创建失败");
+  } finally {
+    loading.value = false;
   }
-  loading.value = false;
 };
 </script>
 

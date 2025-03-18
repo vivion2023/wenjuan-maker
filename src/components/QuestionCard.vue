@@ -22,10 +22,12 @@
     <Divider style="margin: 12px 0" />
     <div class="button-container">
       <div class="left">
-        <Button type="text" :icon="h(EditOutlined)" @click="handleEdit(id)">
+        <Button type="text" :icon="h(EditOutlined)" @click="handleEdit()">
           编辑问卷
         </Button>
-        <Button type="text" :icon="h(BarChartOutlined)">问卷统计</Button>
+        <Button type="text" :icon="h(BarChartOutlined)" @click="handleStat()">
+          问卷统计
+        </Button>
       </div>
       <div class="right">
         <Button
@@ -79,10 +81,13 @@ const handleMove = (id) => {
   store.commit("moveQuestion", [id]);
 };
 
-const { id = "" } = useRoute().params;
+const randomId = Math.random().toString(36).substring(2, 15);
+const handleEdit = (randomId) => {
+  router.push(`/question/edit/${randomId}`);
+};
 
-const handleEdit = () => {
-  router.push(`/question/edit/${id}`);
+const handleStat = (randomId) => {
+  router.push(`/question/stat/${randomId}`);
 };
 </script>
 

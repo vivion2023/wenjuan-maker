@@ -1,24 +1,22 @@
 <template>
   <div>
-    <h2>Edit:{{ id }}</h2>
+    <h2>Edit Page</h2>
+    <p v-if="loading">loading...</p>
+    <p v-else-if="error">{{ error }}</p>
+    <p v-else>{{ JSON.stringify(question) }}</p>
   </div>
 </template>
 
 <script setup>
-import { getQuestionService } from "@/services/question";
+import { useLoadQuestionData } from "@/hooks/useLoadQuestionData";
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const id = route.params.id || "mock-test-id";
+const { question, loading, load, error } = useLoadQuestionData(route.params.id);
 
 onMounted(async () => {
-  try {
-    const data = await getQuestionService(id);
-    console.log("获取到的随机问卷数据:", data);
-  } catch (err) {
-    console.error("请求失败:", err);
-  }
+  await load();
 });
 </script>
 
