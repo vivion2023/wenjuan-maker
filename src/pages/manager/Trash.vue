@@ -5,7 +5,7 @@
         <Title :level="2" style="margin-top: 0">回收站</Title>
       </div>
       <div class="right">
-        <ListSearch />
+        <ListSearch @search="onSearch" />
       </div>
     </div>
     <div class="content">
@@ -31,16 +31,8 @@
         <Table
           :dataSource="questionList"
           :columns="columns"
-          :pagination="{
-            pageSize: 5, // 每页显示数量
-            total: questionList.length, // 总数据量
-            showTotal: (total) => `共 ${total} 条`, // 显示总数据量
-            showSizeChanger: true, // 显示可以改变 pageSize 的选择器
-            showQuickJumper: true, // 显示可以快速跳转的输入框
-            pageSizeOptions: ['5', '10', '20', '50'], // 指定每页可以显示多少条
-          }"
           :row-selection="rowSelection"
-          rowKey="id"
+          rowKey="_id"
         />
       </div>
     </div>
@@ -48,18 +40,28 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography, Button, Space, Table, Tag } from "ant-design-vue";
-import { computed, ref, h } from "vue";
+import { computed, ref, h, onMounted } from "vue";
 import QuestionCard from "@/components/QuestionCard.vue";
+import { useLoadQuestionListData } from "@/hooks/useLoadQuestionListData";
 
 const Title = Typography.Title;
-const store = useStore();
 
-const questionList = computed(() =>
-  store.state.questionList.filter((question) => question.isDeleted)
-);
+const { data, loading, run, updateSearchParams } = useLoadQuestionListData({
+  isDeleted: true,
+});
+const questionList = computed(() => data.value?.List || []);
+const total = computed(() => data.value?.total || 0);
+
+onMounted(async () => {
+  await run();
+});
+
+// 搜索方法 - 使用 updateSearchParams
+const onSearch = (keyword) => {
+  updateSearchParams(keyword);
+};
 
 // 表格列
 const columns = ref([

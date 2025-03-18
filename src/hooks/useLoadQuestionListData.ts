@@ -3,13 +3,20 @@ import { useRequest } from "./useRequest";
 import { getQuestionListService } from "@/services/question";
 import { LIST_SEARCH_PARAM_KEY } from "@/constant";
 
-export function useLoadQuestionListData() {
+type OptionType = {
+  keyword: string;
+  isStar: boolean;
+  isDeleted: boolean;
+};
+
+export function useLoadQuestionListData(options: Partial<OptionType> = {}) {
+  const { isStar, isDeleted } = options;
   const searchParams = ref(new URLSearchParams(window.location.search));
 
   // 使用 useRequest 获取数据
   const { data, loading, error, run } = useRequest(async () => {
     const keyword = searchParams.value.get(LIST_SEARCH_PARAM_KEY) || "";
-    return await getQuestionListService({ keyword });
+    return await getQuestionListService({ keyword, isStar, isDeleted });
   });
 
   // 计算属性用于过滤列表
