@@ -22,7 +22,9 @@
     <Divider style="margin: 12px 0" />
     <div class="button-container">
       <div class="left">
-        <Button type="text" :icon="h(EditOutlined)">编辑问卷</Button>
+        <Button type="text" :icon="h(EditOutlined)" @click="handleEdit(id)">
+          编辑问卷
+        </Button>
         <Button type="text" :icon="h(BarChartOutlined)">问卷统计</Button>
       </div>
       <div class="right">
@@ -56,7 +58,9 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
 import { h } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
+const router = useRouter();
 const { Text, Link } = Typography;
 const store = useStore();
 
@@ -74,8 +78,14 @@ const handleStar = (id) => {
 const handleMove = (id) => {
   store.commit("moveQuestion", [id]);
 };
+
+const { id = "" } = useRoute().params;
+
+const handleEdit = () => {
+  router.push(`/question/edit/${id}`);
+};
 </script>
 
 <style lang="scss" scoped>
-@import "./QuestionCard.module.scss";
+@use "./QuestionCard.module.scss" as *;
 </style>
