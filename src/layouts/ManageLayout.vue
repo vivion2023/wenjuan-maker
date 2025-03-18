@@ -2,7 +2,12 @@
   <div class="container">
     <div class="left">
       <Space direction="vertical">
-        <Button type="primary" size="large" :icon="h(PlusOutlined)"
+        <Button
+          type="primary"
+          size="large"
+          :icon="h(PlusOutlined)"
+          :loading="loading"
+          @click="handleCreateClick"
           >创建问卷</Button
         >
         <Divider dashed />
@@ -50,8 +55,23 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
-
 const router = useRouter();
+
+// 创建问卷
+import { createQuestionService } from "@/services/question";
+import { message } from "ant-design-vue";
+import { ref } from "vue";
+const loading = ref(false);
+const handleCreateClick = async () => {
+  loading.value = true;
+  const data = await createQuestionService();
+  const { id } = data || {};
+  if (id) {
+    router.push(`/question/edit/${id}`);
+    message.success("创建成功");
+  }
+  loading.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
