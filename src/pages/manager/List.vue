@@ -8,25 +8,34 @@
         <ListSearch />
       </div>
     </div>
-    <QuestionCard v-if="questionList.length" :questionList="questionList" />
-    <div v-else class="empty-text">暂无数据</div>
+    <div class="content">
+      <div style="text-align: center">
+        <Spin :spinning="loading"></Spin>
+      </div>
+      <QuestionCard v-if="total > 0" :questionList="list" />
+      <div v-else-if="!loading" class="empty-text">暂无数据</div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-import { computed } from "vue";
 import ListSearch from "@/components/ListSearch.vue";
-import { Typography } from "ant-design-vue";
+import { Typography, Spin } from "ant-design-vue";
 import QuestionCard from "@/components/QuestionCard.vue";
-
+import { getQuestionListService } from "@/services/question";
+import { useRequest } from "@/hooks/useRequest";
+import { onMounted, computed } from "vue";
 const Title = Typography.Title;
-const store = useStore();
 
-// computed 属性
-const questionList = computed(() =>
-  store.state.questionList.filter((question) => !question.isDeleted)
-);
+// 获取问卷列表
+const { data, loading, error, run } = useRequest(getQuestionListService);
+// 使用计算属性处理数据
+const list = computed(() => data.value?.List || []);
+const total = computed(() => data.value?.total || 0);
+
+onMounted(async () => {
+  await run();
+});
 
 // 方法定义
 const add = () => {

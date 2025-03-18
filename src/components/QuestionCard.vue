@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-for="question in questionList" :key="question.id">
+  <div class="container" v-for="question in questionList" :key="question._id">
     <div class="title">
       <div class="left">
         <Link href="#">
@@ -22,10 +22,18 @@
     <Divider style="margin: 12px 0" />
     <div class="button-container">
       <div class="left">
-        <Button type="text" :icon="h(EditOutlined)" @click="handleEdit()">
+        <Button
+          type="text"
+          :icon="h(EditOutlined)"
+          @click="handleEdit(question._id)"
+        >
           编辑问卷
         </Button>
-        <Button type="text" :icon="h(BarChartOutlined)" @click="handleStat()">
+        <Button
+          type="text"
+          :icon="h(BarChartOutlined)"
+          @click="handleStat(question._id)"
+        >
           问卷统计
         </Button>
       </div>
@@ -33,7 +41,7 @@
         <Button
           type="text"
           :icon="h(StarOutlined)"
-          @click="handleStar(question.id)"
+          @click="handleStar(question._id)"
         >
           {{ question.isStar ? "取消标星" : "标星" }}
         </Button>
@@ -41,7 +49,7 @@
         <Button
           type="text"
           :icon="h(DeleteOutlined)"
-          @click="handleMove(question.id)"
+          @click="handleMove(question._id)"
           >删除</Button
         >
       </div>
@@ -60,7 +68,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
 import { h } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const { Text, Link } = Typography;
@@ -81,13 +89,12 @@ const handleMove = (id) => {
   store.commit("moveQuestion", [id]);
 };
 
-const randomId = Math.random().toString(36).substring(2, 15);
-const handleEdit = (randomId) => {
-  router.push(`/question/edit/${randomId}`);
+const handleEdit = (id) => {
+  router.push(`/question/edit/${id}`);
 };
 
-const handleStat = (randomId) => {
-  router.push(`/question/stat/${randomId}`);
+const handleStat = (id) => {
+  router.push(`/question/stat/${id}`);
 };
 </script>
 
