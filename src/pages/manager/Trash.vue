@@ -84,7 +84,12 @@ onMounted(async () => {
 
 // 搜索方法 - 使用 updateSearchParams
 const onSearch = (keyword) => {
-  updateSearchParams(keyword);
+  updateSearchParams(keyword, {
+    isDeleted: true,
+    page: 1,
+    pageSize: currentPageSize.value,
+  });
+  currentPage.value = 1;
 };
 
 // 表格列
