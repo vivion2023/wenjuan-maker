@@ -29,12 +29,20 @@
       </div>
       <div>
         <Table
-          :dataSource="questionList"
+          :dataSource="List"
           :columns="columns"
           :row-selection="rowSelection"
           rowKey="_id"
         />
       </div>
+    </div>
+    <div class="footer">
+      <ListPage
+        :total="total"
+        :current="current"
+        :page-size="pageSize"
+        @pageChange="handlePageChange"
+      />
     </div>
   </div>
 </template>
@@ -42,17 +50,33 @@
 <script setup>
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography, Button, Space, Table, Tag } from "ant-design-vue";
-import { computed, ref, h, onMounted } from "vue";
+import { computed, ref, h, onMounted, watch } from "vue";
 import QuestionCard from "@/components/QuestionCard.vue";
 import { useLoadQuestionListData } from "@/hooks/useLoadQuestionListData";
+import { LIST_PAGE_SIZE } from "@/constant";
+import { useRoute } from "vue-router";
+import ListPage from "@/components/ListPage.vue";
 
 const Title = Typography.Title;
 
+// 获取当前路由
+const route = useRoute();
+const query = route.query;
+
+// 从路由参数中获取 page 和 pageSize
+const currentPage = ref(parseInt(query.page) || 1);
+const currentPageSize = ref(parseInt(query.pageSize) || LIST_PAGE_SIZE);
+// 获取问卷列表，传递 isDeleted: true 参数
 const { data, loading, run, updateSearchParams } = useLoadQuestionListData({
   isDeleted: true,
+  page: currentPage.value,
+  pageSize: currentPageSize.value,
 });
-const questionList = computed(() => data.value?.List || []);
+
+const List = computed(() => data.value?.List || []);
 const total = computed(() => data.value?.total || 0);
+const current = computed(() => currentPage.value);
+const pageSize = computed(() => currentPageSize.value);
 
 onMounted(async () => {
   await run();
@@ -116,6 +140,28 @@ const handleRestore = () => {
 const handleDelete = () => {
   store.commit("deleteQuestion", selectedRowKeys.value);
 };
+
+// 处理分页变化
+const handlePageChange = (page, pageSize) => {
+  // 修改 ref 的 value 属性
+  currentPage.value = page;
+  currentPageSize.value = pageSize;
+
+  // 重新加载数据
+  updateSearchParams("", {
+    isStar: true,
+    page,
+    pageSize,
+  });
+};
+
+// 监听路由变化
+watch(route, (newRoute) => {
+  // 修改 ref 的 value 属性
+  currentPage.value = Number(newRoute.query.page) || 1;
+  currentPageSize.value = Number(newRoute.query.pageSize) || LIST_PAGE_SIZE;
+  run();
+});
 </script>
 
 <style lang="scss" scoped>
