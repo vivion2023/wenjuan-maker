@@ -46,13 +46,21 @@ export function useLoadQuestionListData(options: Partial<OptionType> = {}) {
   // 更新搜索参数的方法
   const updateSearchParams = (
     keyword: string,
-    page?: number,
-    pageSize?: number
+    options: Partial<{
+      isStar: boolean;
+      isDeleted: boolean;
+      page: number;
+      pageSize: number;
+    }> = {}
   ) => {
+    const { page, pageSize } = options;
+
     searchParams.value.set(LIST_SEARCH_PARAM_KEY, keyword);
-    if (page) searchParams.value.set(LIST_PAGE_PARAM_KEY, page.toString());
-    if (pageSize)
+    if (page !== undefined)
+      searchParams.value.set(LIST_PAGE_PARAM_KEY, page.toString());
+    if (pageSize !== undefined)
       searchParams.value.set(LIST_PAGE_SIZE_PARAM_KEY, pageSize.toString());
+
     // 更新 URL
     window.history.pushState({}, "", `?${searchParams.value.toString()}`);
     run(); // 重新加载数据
