@@ -5,7 +5,7 @@
         <Title :level="2" style="margin-top: 0">我的问卷</Title>
       </div>
       <div class="right">
-        <ListSearch @search="onSearch" />
+        <ListSearch v-model="searchParams.keyword" @search="onSearch" />
       </div>
     </div>
     <div class="content" ref="scrollRef">
@@ -26,13 +26,12 @@
 import ListSearch from "@/components/ListSearch.vue";
 import { Typography, Spin } from "ant-design-vue";
 import QuestionCard from "@/components/QuestionCard.vue";
-import { useLoadQuestionListData } from "@/hooks/useLoadQuestionListData";
+import { useRequest } from "@/hooks/useRequest";
+import { getQuestionListService } from "@/services/question";
 import { onMounted, computed, ref, watch, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 const Title = Typography.Title;
 
-// 获取问卷列表
-const { data, loading, error, run } = useLoadQuestionListData();
 // 使用计算属性处理数据
 const list = ref([]);
 const total = computed(() => data.value?.total || 0);
@@ -44,6 +43,17 @@ const route = useRoute();
 const router = useRouter();
 const searchParams = ref({
   keyword: route.query.keyword || "",
+});
+// 使用 useRequest 获取数据
+const { data, loading, error, run } = useRequest(async () => {
+  const keyword = searchParams.value.keyword || "";
+  const page = currentPage.value;
+  const pageSize = currentPageSize.value;
+  return await getQuestionListService({
+    keyword,
+    page,
+    pageSize,
+  });
 });
 
 const debounce = (func, delay) => {
@@ -59,18 +69,9 @@ const debounce = (func, delay) => {
 const tryLoadMore = async () => {
   if (!haveMoreData.value || loading.value) return;
 
-  // 从路由中获取当前的 page 和 pageSize
-  const routePage = parseInt(route.query.page) || 1;
-  const routePageSize = parseInt(route.query.pageSize) || 10;
-
-  // 计算下一页
-  const nextPage = routePage + 1;
-
   // 更新为下一页
-  await updateSearchParams(searchParams.value.keyword, {
-    page: nextPage,
-    pageSize: routePageSize,
-  });
+  currentPage.value += 1;
+  await run(currentPage.value);
 
   if (data.value?.List) {
     list.value = [...list.value, ...data.value.List];
@@ -83,49 +84,34 @@ watch(searchParams, async () => {
   if (searchParams.value.keyword) {
     await tryLoadMore();
   }
-  currentPage.value = route.query.page || 1;
-  currentPageSize.value = route.query.pageSize || 10;
+  currentPage.value = 1;
 });
 
-// 监听 haveMoreData 的变化
-// 页面滚动时，如果还有更多数据，则添加滚动事件
-// watch(haveMoreData, async () => {
-//   if (haveMoreData.value) {
-//     window.addEventListener("scroll", tryLoadMore);
-//   } else {
-//     window.removeEventListener("scroll", tryLoadMore);
-//   }
-// });
-
+// 滚动事件处理
 const onScroll = () => {
   const scrollElement = scrollRef.value;
   if (!scrollElement) return;
 
-  // 可滚动容器的高度
-  const scrollHeight = document.documentElement.scrollHeight;
-  // 屏幕尺寸高度
-  const clientHeight = window.innerHeight;
-  // 可滚动容器超出当前窗口显示范围的高度
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  if (scrollTop === 0) return;
+  const domRect = scrollElement.getBoundingClientRect();
+  if (!domRect) return;
 
-  if (scrollTop + clientHeight >= scrollHeight - 10) {
+  const { bottom } = domRect;
+  if (bottom <= window.innerHeight) {
     tryLoadMore();
   }
 };
 
-const debouncedOnScroll = debounce(onScroll, 200);
+const debouncedOnScroll = debounce(onScroll, 1000);
 
 onMounted(async () => {
+  currentPage.value = 1;
   router.replace({
     query: {
       keyword: searchParams.value.keyword,
-      page: 1,
-      pageSize: 10,
     },
   });
 
-  await run();
+  await run(currentPage.value);
   list.value = data.value?.List || [];
   // 监听滚动事件
   window.addEventListener("scroll", debouncedOnScroll);
@@ -141,19 +127,24 @@ const updateSearchParams = async (keyword, { page, pageSize }) => {
   router.replace({
     query: {
       keyword,
-      page,
-      pageSize,
     },
   });
-  await run();
+  currentPage.value = page;
+  currentPageSize.value = pageSize;
 };
 
 // 搜索方法 - 使用 updateSearchParams
 const onSearch = (keyword) => {
   list.value = [];
+  currentPage.value = 1;
   updateSearchParams(keyword, {
-    page: 1,
+    page: currentPage.value,
     pageSize: currentPageSize.value,
+  });
+  run().then(() => {
+    if (data.value?.List) {
+      list.value = [...list.value, ...data.value.List];
+    }
   });
 };
 
