@@ -64,7 +64,12 @@
 
         <FormItem :wrapper-col="{ offset: 6, span: 16 }">
           <Space>
-            <Button type="primary" html-type="submit" :loading="isSubmitting">
+            <Button
+              type="primary"
+              html-type="submit"
+              :loading="isSubmitting"
+              @click="onFinish(formState)"
+            >
               注册
             </Button>
             <router-link :to="LOGIN_PATHNAME">已有账户，登录</router-link>
@@ -80,6 +85,8 @@ import { UserAddOutlined } from "@ant-design/icons-vue";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
+import { useRequest } from "@/hooks/useRequest";
+import { registerService } from "@/services/user";
 import {
   Form,
   FormItem,
@@ -106,6 +113,8 @@ const formState = reactive({
   nickname: "",
 });
 
+const { run } = useRequest();
+
 // 验证确认密码
 const validateConfirmPassword = async (rule, value) => {
   if (!value) {
@@ -117,77 +126,38 @@ const validateConfirmPassword = async (rule, value) => {
   return Promise.resolve();
 };
 
-// 注册服务
-const registerService = async (username, password, nickname) => {
-  // 这里应调用实际的注册API
-  // 示例实现:
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ token: "mock-token-" + Date.now() });
-    }, 1000);
-  });
-};
-
-// 设置token
-const setToken = (token) => {
-  localStorage.setItem("TOKEN", token);
-};
-
 // 表单提交
 const onFinish = async (values) => {
+  const { username, password, nickname, confirmPassword } = values;
+
+  // 检查密码和确认密码是否一致
+  if (password !== confirmPassword) {
+    message.error("两次输入的密码不一致");
+    return; // 直接返回，不进行提交
+  }
+
   try {
     isSubmitting.value = true;
+    await registerService(username, password, nickname);
 
-    const { username, password, nickname } = values;
-    const result = await registerService(username, password, nickname);
-
-    if (result.token) {
-      setToken(result.token);
-      message.success("注册成功");
-      router.push(MANAGE_INDEX_PATHNAME);
-    }
+    onSuccess();
   } catch (error) {
-    console.error("注册失败:", error);
-    message.error("注册失败，请重试");
+    onError();
   } finally {
     isSubmitting.value = false;
   }
 };
+
+const onSuccess = () => {
+  message.success("注册成功");
+  router.push("/login");
+};
+
+const onError = () => {
+  message.error("注册失败，请重试");
+};
 </script>
 
 <style lang="scss" scoped>
-.container {
-  width: 100%;
-  max-width: 400px;
-  margin: 80px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.title-container {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.form-container {
-  width: 100%;
-}
-
-:deep(
-  .ant-form-item-label
-    > label.ant-form-item-required:not(
-      .ant-form-item-required-mark-optional
-    )::before
-) {
-  color: #ff4d4f;
-}
-
-:deep(.ant-btn-primary) {
-  background-color: #1890ff;
-}
-
-:deep(a) {
-  color: #1890ff;
-}
+@use "./Register.module.scss";
 </style>
