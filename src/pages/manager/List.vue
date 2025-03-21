@@ -71,7 +71,7 @@ const tryLoadMore = async () => {
 
   // 更新为下一页
   currentPage.value += 1;
-  await run(currentPage.value);
+  await run();
 
   if (data.value?.List) {
     list.value = [...list.value, ...data.value.List];
@@ -111,7 +111,7 @@ onMounted(async () => {
     },
   });
 
-  await run(currentPage.value);
+  await run();
   list.value = data.value?.List || [];
   // 监听滚动事件
   window.addEventListener("scroll", debouncedOnScroll);
