@@ -85,7 +85,6 @@ import { UserAddOutlined } from "@ant-design/icons-vue";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
-import { useRequest } from "@/hooks/useRequest";
 import { registerService } from "@/services/user";
 import {
   Form,
@@ -112,8 +111,6 @@ const formState = reactive({
   confirmPassword: "",
   nickname: "",
 });
-
-const { run } = useRequest();
 
 // 验证确认密码
 const validateConfirmPassword = async (rule, value) => {

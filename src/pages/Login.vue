@@ -66,6 +66,9 @@ import { UserAddOutlined } from "@ant-design/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
+import { loginService } from "@/services/user";
+import { useRequest } from "@/hooks/useRequest";
+import { setToken } from "@/utils/user-token";
 import {
   Form,
   FormItem,
@@ -77,11 +80,12 @@ import {
   Typography,
   TypographyTitle,
 } from "ant-design-vue";
+
 // 配置项
 const USERNAME_KEY = "USERNAME";
 const PASSWORD_KEY = "PASSWORD";
-const REGISTER_PATHNAME = "/register"; // 根据实际路由配置
-const MANAGE_INDEX_PATHNAME = "/manage"; // 根据实际路由配置
+const REGISTER_PATHNAME = "/register";
+const MANAGE_INDEX_PATHNAME = "/manager";
 
 const router = useRouter();
 const isSubmitting = ref(false);
@@ -93,62 +97,58 @@ const formState = reactive({
   remember: true,
 });
 
-// 从本地存储获取用户信息
-const getUserInfoFromStorage = () => {
+// 本地存储相关函数
+function rememberUser(username, password) {
+  localStorage.setItem(USERNAME_KEY, username);
+  localStorage.setItem(PASSWORD_KEY, password);
+}
+
+function deleteUserFromStorage() {
+  localStorage.removeItem(USERNAME_KEY);
+  localStorage.removeItem(PASSWORD_KEY);
+}
+
+function getUserInfoFromStorage() {
   return {
     username: localStorage.getItem(USERNAME_KEY),
     password: localStorage.getItem(PASSWORD_KEY),
   };
-};
+}
 
-// 记住用户信息
-const rememberUser = (username, password) => {
-  localStorage.setItem(USERNAME_KEY, username);
-  localStorage.setItem(PASSWORD_KEY, password);
-};
-
-// 删除存储的用户信息
-const deleteUserFromStorage = () => {
-  localStorage.removeItem(USERNAME_KEY);
-  localStorage.removeItem(PASSWORD_KEY);
-};
-
-// 登录服务
-const loginService = async (username, password) => {
-  // 这里应调用实际的登录API
-  // 示例实现:
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ token: "mock-token-" + Date.now() });
-    }, 1000);
-  });
-};
-
-// 设置token
-const setToken = (token) => {
-  localStorage.setItem("TOKEN", token);
-};
+const { run } = useRequest(async (username, password) => {
+  const data = await loginService(username, password);
+  return data;
+});
 
 // 表单提交
 const onFinish = async (values) => {
+  const { username, password, remember } = values;
+
+  isSubmitting.value = true;
   try {
-    isSubmitting.value = true;
-    const result = await loginService(values.username, values.password);
+    const result = await run(username, password); // 执行 ajax
+    console.log("result", result);
 
-    if (result.token) {
-      setToken(result.token);
+    const token = result?.token || "";
 
-      if (values.remember) {
-        rememberUser(values.username, values.password);
-      } else {
-        deleteUserFromStorage();
-      }
+    if (token) {
+      setToken(token); // 存储 token
+      console.log("已保存 token:", token); // 调试用
 
       message.success("登录成功");
       router.push(MANAGE_INDEX_PATHNAME);
+    } else {
+      message.error("登录失败: 未获取到 token");
+    }
+
+    // 处理记住我功能
+    if (remember) {
+      rememberUser(username, password);
+    } else {
+      deleteUserFromStorage();
     }
   } catch (error) {
-    console.error("登录失败:", error);
+    console.error("登录错误:", error);
     message.error("登录失败，请重试");
   } finally {
     isSubmitting.value = false;
