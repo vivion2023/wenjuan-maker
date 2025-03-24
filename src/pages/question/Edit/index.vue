@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <h2>Edit Page</h2>
-    <p v-if="loading">loading...</p>
-    <p v-else-if="error">{{ error }}</p>
-    <p v-else>{{ JSON.stringify(question) }}</p>
+  <div class="container">
+    <div class="header">Header</div>
+    <div class="content">
+      <div class="left">Left</div>
+      <div class="main">
+        <div class="canvas-wrapper">
+          <QuestionTitle />
+          <QuestionInput />
+        </div>
+      </div>
+      <div class="right">Right</div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useLoadQuestionData } from "@/hooks/useLoadQuestionData";
-import { onMounted } from "vue";
-import { useRoute } from "vue-router";
-
-const route = useRoute();
-const { question, loading, load, error } = useLoadQuestionData(route.params.id);
-
-onMounted(async () => {
-  await load();
-});
+import QuestionTitle from "@/components/QuestionComponents/QuestionTitle/QuestionTitle.vue";
+import QuestionInput from "@/components/QuestionComponents/QuestionInput/QuestionInput.vue";
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@use "./index.module.scss" as *;
+</style>
