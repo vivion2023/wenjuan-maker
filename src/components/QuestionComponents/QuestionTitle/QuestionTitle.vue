@@ -4,7 +4,7 @@
       :level="level"
       :style="{
         textAlign: isCenter ? 'center' : 'left',
-        marginBottom: 0,
+        margin: 0,
         fontSize: getFontSize,
       }"
     >

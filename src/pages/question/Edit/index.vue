@@ -5,8 +5,7 @@
       <div class="left">Left</div>
       <div class="main">
         <div class="canvas-wrapper">
-          <QuestionTitle />
-          <QuestionInput />
+          <EditCanvas />
         </div>
       </div>
       <div class="right">Right</div>
@@ -15,8 +14,7 @@
 </template>
 
 <script setup>
-import QuestionTitle from "@/components/QuestionComponents/QuestionTitle/QuestionTitle.vue";
-import QuestionInput from "@/components/QuestionComponents/QuestionInput/QuestionInput.vue";
+import EditCanvas from "./EditCanvas.vue";
 </script>
 
 <style scoped lang="scss">
