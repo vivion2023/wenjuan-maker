@@ -3,13 +3,10 @@ import { ResDataType } from "@/services/ajax";
 import { getQuestionService } from "@/services/question";
 import { ref, onMounted, watch } from "vue";
 import { useRequest } from "./useRequest";
-import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { ComponentsStateType } from "@/store/componentsStore/store";
 
 // 获取问卷数据
 export function useLoadQuestionData(id: string) {
-  const route = useRoute();
   const store = useStore();
   const { data, loading, error, run } = useRequest(async () => {
     const data = await getQuestionService(id);

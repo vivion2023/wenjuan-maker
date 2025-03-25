@@ -1,14 +1,16 @@
-import { defineStore } from "pinia";
-import componentsStore from "./componentsStore";
+import { createStore } from "vuex";
 import { ComponentsStateType } from "./componentsStore/store";
+import componentsModule from "./componentsStore";
 
 export type StateType = {
   // user
   componentsStore: ComponentsStateType;
 };
 
-export const useStore = defineStore("store", {
-  state: () => ({
-    componentsStore: componentsStore,
-  }),
+export const store = createStore({
+  modules: {
+    componentsStore: componentsModule,
+  },
 });
+
+export default store;
