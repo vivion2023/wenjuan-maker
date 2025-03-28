@@ -7,11 +7,7 @@
       </Paragraph>
     </div>
     <div>
-      <Button
-        type="primary"
-        size="large"
-        @click="() => router.push(MANAGER_INDEX_PATHNAME)"
-      >
+      <Button type="primary" size="large" @click="handleLogin">
         开始使用
       </Button>
     </div>
@@ -24,6 +20,24 @@ import { useRouter } from "vue-router";
 import { MANAGER_INDEX_PATHNAME } from "@/router";
 const { Title, Paragraph } = Typography;
 const router = useRouter();
+
+// 判断是否登录
+function handleLogin() {
+  try {
+    const token = localStorage.getItem("TOKEN");
+    if (token) {
+      // 已登录，跳转到问卷管理页面
+      router.push("/manager/List");
+    } else {
+      // 未登录，跳转到登录页面
+      router.push("/login");
+    }
+  } catch (error) {
+    console.error("登录跳转异常:", error);
+    // 发生错误时默认跳转到登录页
+    router.push("/login");
+  }
+}
 </script>
 
 <style lang="scss" scoped>
