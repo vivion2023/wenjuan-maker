@@ -3,7 +3,7 @@
     <div class="header">Header</div>
     <div class="content">
       <div class="left">Left</div>
-      <div class="main">
+      <div class="main" @click="clearSelected">
         <div class="canvas-wrapper">
           <EditCanvas />
         </div>
@@ -15,6 +15,13 @@
 
 <script setup>
 import EditCanvas from "./EditCanvas.vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const clearSelected = () => {
+  store.commit("componentsStore/CHANGE_SELECTID", { selectedId: "" });
+};
 </script>
 
 <style scoped lang="scss">

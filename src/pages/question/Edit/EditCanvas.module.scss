@@ -13,6 +13,17 @@
   &:hover {
     border-color: #d9d9d9;
   }
+
+  // 选中状态的样式
+  &.selected {
+    border-color: #1890ff !important;
+  }
+
+  // 锁定状态的样式
+  &.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .component-container {
