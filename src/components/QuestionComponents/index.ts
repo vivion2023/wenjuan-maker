@@ -31,6 +31,25 @@ const componentConfList: ComponentConfType[] = [
   QuestionInputConf as ComponentConfType,
 ];
 
+// 组件分组
+export const componentConfGroup = [
+  {
+    groupId: "textGroup",
+    groupName: "文本显示",
+    components: [QuestionTitleConf],
+  },
+  {
+    groupId: "inputGroup",
+    groupName: "用户输入",
+    components: [QuestionInputConf],
+  },
+  // {
+  //   groupId: 'chooseGroup',
+  //   groupName: '用户选择',
+  //   components: [QuestionRadioConf, QuestionCheckboxConf],
+  // },
+];
+
 /**
  * @description 根据组件的type返回对应组件的配置
  * @param type 组件的type

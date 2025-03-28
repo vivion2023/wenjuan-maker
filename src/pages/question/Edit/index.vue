@@ -2,7 +2,9 @@
   <div class="container">
     <div class="header">Header</div>
     <div class="content">
-      <div class="left">Left</div>
+      <div class="left">
+        <LeftPanel />
+      </div>
       <div class="main" @click="clearSelected">
         <div class="canvas-wrapper">
           <EditCanvas />
@@ -16,7 +18,7 @@
 <script setup>
 import EditCanvas from "./EditCanvas.vue";
 import { useStore } from "vuex";
-
+import LeftPanel from "./LeftPanel.vue";
 const store = useStore();
 
 const clearSelected = () => {

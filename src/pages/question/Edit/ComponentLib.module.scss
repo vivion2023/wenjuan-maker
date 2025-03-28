@@ -1,0 +1,19 @@
+:deep(.ant-menu) {
+  border-right: none;
+}
+
+:deep(.ant-menu-item) {
+  height: 40px;
+  line-height: 40px;
+
+  &:hover {
+    background-color: #f0f2f5;
+  }
+}
+
+:deep(.ant-menu-item-group-title) {
+  font-size: 16px;
+  font-weight: 600;
+  color: #272727;
+  padding: 8px 16px;
+}
