@@ -15,6 +15,20 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     CHANGE_SELECTID(state, payload: { selectedId: string }) {
       state.selectedId = payload.selectedId;
     },
+    UPDATE_COMPONENT_PROPS(
+      state,
+      payload: { fe_id: string; newProps: ComponentPropsType }
+    ) {
+      const { fe_id, newProps } = payload;
+      const component = state.componentList.find((c) => c.fe_id === fe_id);
+      if (component) {
+        // 更新组件的属性
+        component.props = {
+          ...component.props,
+          ...newProps,
+        };
+      }
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -22,6 +36,12 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     changeSelectedID({ commit }, payload: { selectedId: string }) {
       commit("CHANGE_SELECTID", payload);
+    },
+    updateComponentProps(
+      { commit },
+      payload: { fe_id: string; newProps: ComponentPropsType }
+    ) {
+      commit("UPDATE_COMPONENT_PROPS", payload);
     },
   },
 };

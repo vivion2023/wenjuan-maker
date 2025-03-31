@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="header">Header</div>
+    <div class="header">
+      <EditHeader />
+    </div>
     <div class="content">
       <div class="left">
         <LeftPanel />
@@ -10,7 +12,9 @@
           <EditCanvas />
         </div>
       </div>
-      <div class="right">Right</div>
+      <div class="right">
+        <RightPanel />
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +23,8 @@
 import EditCanvas from "./EditCanvas.vue";
 import { useStore } from "vuex";
 import LeftPanel from "./LeftPanel.vue";
+import RightPanel from "./RightPanel.vue";
+import EditHeader from "./EditHeader.vue";
 const store = useStore();
 
 const clearSelected = () => {

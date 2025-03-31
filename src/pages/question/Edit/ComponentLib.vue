@@ -14,8 +14,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { Tabs, Menu } from "ant-design-vue";
+import { Menu } from "ant-design-vue";
 import { useStore } from "vuex";
 import { componentConfGroup } from "@/components/QuestionComponents";
 

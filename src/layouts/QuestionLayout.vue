@@ -1,5 +1,4 @@
 <template>
-  <div>Question Layout</div>
   <router-view v-slot="{ Component }">
     <keep-alive>
       <component :is="Component" />
@@ -7,8 +6,8 @@
   </router-view>
 </template>
 
-<script>
-export default {};
+<script setup>
+import QuestionHeader from "@/pages/question/Edit/EditHeader.vue";
 </script>
 
 <style scoped></style>

@@ -14,17 +14,10 @@
     >
       <div class="component-container">
         <component
-          v-if="getComponentByType(item.type)"
-          :is="getComponentByType(item.type)"
+          v-if="genComponentByType(item.type)"
+          :is="genComponentByType(item.type)"
           v-bind="item.props"
         />
-      </div>
-    </div>
-    <div class="component-wrapper">
-      <div class="component-container">
-        <div>
-          <p>{{ JSON.stringify(componentList) }}</p>
-        </div>
       </div>
     </div>
   </div>
@@ -68,7 +61,7 @@ const currentSelectedId = computed(() => {
   return store.state.componentsStore.selectedId;
 });
 
-const getComponentByType = (type: string) => {
+const genComponentByType = (type: string) => {
   const conf = getComponentConfByType(type);
   if (!conf) return null;
   return conf.component;

@@ -1,6 +1,6 @@
 <template>
   <Form :model="form" layout="vertical">
-    <FormItem label="标题" name="title">
+    <FormItem label="标题" name="title" required>
       <Input v-model="form.title" />
     </FormItem>
     <FormItem label="Placeholder" name="placeholder">
@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { Form, Input, FormItem } from "ant-design-vue";
 import { QuestionInputDefaultProps } from "./interface";
 
