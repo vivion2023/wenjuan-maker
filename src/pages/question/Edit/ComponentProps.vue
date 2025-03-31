@@ -1,9 +1,9 @@
 <template>
-  <component :is="genComponentByType(type)" />
+  <component :is="genComponentByType(type)" v-bind="props" />
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { getComponentConfByType } from "@/components/QuestionComponents";
 
@@ -46,19 +46,10 @@ const componentConf = computed(() => {
   return getComponentConfByType(type.value) || null;
 });
 
+// 根据组件类型生成属性组件
 const genComponentByType = (type: string) => {
   const conf = getComponentConfByType(type);
   if (!conf) return null;
   return conf.PropComponent || null;
 };
-
-// const handlePropsChange = (newProps: any) => {
-//   if (!currentSelectedId.value) return;
-
-//   // 分发action到store
-//   store.dispatch("componentsStore/changeComponentProps", {
-//     fe_id: currentSelectedId.value,
-//     newProps,
-//   });
-// };
 </script>

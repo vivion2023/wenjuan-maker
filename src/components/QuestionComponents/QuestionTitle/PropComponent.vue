@@ -1,27 +1,27 @@
 <template>
-  <Form :model="formData" layout="vertical">
+  <Form :model="props" layout="vertical">
     <FormItem label="标题内容" name="title" required>
-      <Input v-model:value="formData.title" />
+      <Input v-model:value="props.title" />
     </FormItem>
     <FormItem label="层级" name="level">
-      <Select v-model="formData.level" :options="options" :default-value="1" />
+      <Select v-model="props.level" :options="options" :default-value="1" />
     </FormItem>
     <FormItem name="isCenter" valuePropName="checked">
-      <Checkbox v-model:checked="formData.isCenter">居中显示</Checkbox>
+      <Checkbox v-model:checked="props.isCenter">居中显示</Checkbox>
     </FormItem>
   </Form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, ref, watch } from "vue";
 import { Form, Input, FormItem, Checkbox, Select } from "ant-design-vue";
-import { QuestionTitleDefaultProps } from "./interface";
+import { QuestionTitlePropsType, QuestionTitleDefaultProps } from "./interface";
+import { defineProps, withDefaults } from "vue";
 
-const props = defineProps({
-  title: String,
-  level: Number,
-  isCenter: Boolean,
-});
+const props = withDefaults(
+  defineProps<QuestionTitlePropsType>(),
+  QuestionTitleDefaultProps
+);
 
 const options = ref([
   {
@@ -39,10 +39,6 @@ const options = ref([
 ]);
 
 // const emit = defineEmits(["change"]);
-
-// 创建表单数据，初始化为默认值
-const formData = ref({ ...QuestionTitleDefaultProps });
-console.log(formData.value);
 
 // // 监听props变化，更新表单数据
 // watch(
