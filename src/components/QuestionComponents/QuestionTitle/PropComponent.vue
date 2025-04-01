@@ -1,13 +1,17 @@
 <template>
-  <Form :model="props" layout="vertical">
+  <Form :model="formData" layout="vertical">
     <FormItem label="标题内容" name="title" required>
-      <Input v-model:value="props.title" />
+      <Input v-model:value="formData.title" />
     </FormItem>
     <FormItem label="层级" name="level">
-      <Select v-model="props.level" :options="options" :default-value="1" />
+      <Select
+        v-model:value="formData.level"
+        :options="options"
+        :default-value="1"
+      />
     </FormItem>
     <FormItem name="isCenter" valuePropName="checked">
-      <Checkbox v-model:checked="props.isCenter">居中显示</Checkbox>
+      <Checkbox v-model:checked="formData.isCenter">居中显示</Checkbox>
     </FormItem>
   </Form>
 </template>
@@ -18,8 +22,11 @@ import { Form, Input, FormItem, Checkbox, Select } from "ant-design-vue";
 import { QuestionTitlePropsType, QuestionTitleDefaultProps } from "./interface";
 import { defineProps, withDefaults } from "vue";
 
+// 定义传入的 props 类型
+type QuestionTitleProps = QuestionTitlePropsType;
+
 const props = withDefaults(
-  defineProps<QuestionTitlePropsType>(),
+  defineProps<QuestionTitleProps>(),
   QuestionTitleDefaultProps
 );
 
@@ -38,30 +45,16 @@ const options = ref([
   },
 ]);
 
-// const emit = defineEmits(["change"]);
+const formData = ref({ ...props });
+console.log(formData.value);
 
-// // 监听props变化，更新表单数据
-// watch(
-//   () => props,
-//   (newProps) => {
-//     // 只更新表单中存在的字段
-//     const updatedData = {};
-//     formData.value = { ...formData.value, ...updatedData };
-//   },
-//   { immediate: true, deep: true }
-// );
-
-// // 监听表单数据变化，触发change事件
-// watch(
-//   formData,
-//   (newVal) => {
-//     emit("change", { ...newVal });
-//   },
-//   { deep: true }
-// );
-
-// // 表单值变化时的处理函数
-// const handleValuesChange = () => {
-//   emit("change", { ...formData.value });
-// };
+// 监听props变化，更新表单数据
+watch(
+  () => props,
+  (newProps) => {
+    console.log("新 props:", newProps); // 添加调试输出
+    formData.value = { ...newProps };
+  },
+  { deep: true }
+);
 </script>

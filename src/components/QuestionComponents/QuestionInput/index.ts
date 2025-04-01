@@ -6,7 +6,7 @@ import QuestionInputComponent from "./QuestionInputComponent.vue";
 import PropComponent from "./PropComponent.vue";
 import { QuestionInputDefaultProps } from "./interface";
 
-export * from "./interface";
+export type { QuestionInputPropsType } from "./interface";
 
 export default {
   title: "输入框",

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Paragraph strong>{{ title }}</Paragraph>
-    <Input :placeholder="placeholder" />
+    <el-input :placeholder="placeholder" />
   </div>
 </template>
 

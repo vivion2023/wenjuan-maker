@@ -8,7 +8,7 @@
         fontSize: getFontSize,
       }"
     >
-      {{ text }}
+      {{ title }}
     </Title>
   </div>
 </template>
@@ -24,7 +24,7 @@ const props = withDefaults(
   QuestionTitleDefaultProps
 );
 
-const { text, level, isCenter } = props;
+const { title, level, isCenter } = props;
 
 const getFontSize = computed(() => {
   return level === 1 ? "24px" : level === 2 ? "20px" : "16px";

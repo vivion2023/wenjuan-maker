@@ -6,7 +6,7 @@ import QuestionTitleComponent from "./QuestionTitleComponent.vue";
 import PropComponent from "./PropComponent.vue";
 import { QuestionTitleDefaultProps } from "./interface";
 
-export * from "./interface";
+export type { QuestionTitlePropsType } from "./interface"; // 添加这行导出类型
 
 export default {
   title: "标题",

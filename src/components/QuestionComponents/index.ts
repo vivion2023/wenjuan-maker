@@ -4,13 +4,30 @@ import QuestionTitleConf, {
 import QuestionInputConf, {
   QuestionInputPropsType,
 } from "./QuestionInput/index";
+import QuestionParagraphConf, {
+  QuestionParagraphPropsType,
+} from "./QuestionParagraph/index";
+import QuestionInfoConf, { QuestionInfoPropsType } from "./QuestionInfo/index";
+import QuestionRadioConf, {
+  QuestionRadioPropsType,
+} from "./QuestionRadio/index";
+import QuestionCheckboxConf, {
+  QuestionCheckboxPropsType,
+} from "./QuestionCheckbox/index";
 import { DefineComponent } from "vue";
-
+import QuestionTextareaConf, {
+  QuestionTextareaPropsType,
+} from "./QuestionTextarea/index";
 /**
  * @description 集合组件的配置
  * */
 export type ComponentPropsType = QuestionTitlePropsType &
-  QuestionInputPropsType;
+  QuestionInputPropsType &
+  QuestionParagraphPropsType &
+  QuestionInfoPropsType &
+  QuestionRadioPropsType &
+  QuestionCheckboxPropsType &
+  QuestionTextareaPropsType;
 
 /**
  * @description 组件的配置 type
@@ -29,6 +46,11 @@ export type ComponentConfType = {
 const componentConfList: ComponentConfType[] = [
   QuestionTitleConf as ComponentConfType,
   QuestionInputConf as ComponentConfType,
+  QuestionParagraphConf as ComponentConfType,
+  QuestionInfoConf as ComponentConfType,
+  QuestionRadioConf as ComponentConfType,
+  QuestionCheckboxConf as ComponentConfType,
+  QuestionTextareaConf as ComponentConfType,
 ];
 
 // 组件分组

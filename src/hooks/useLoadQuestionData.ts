@@ -1,4 +1,6 @@
-// useLoadQuestionData 获取问卷数据
+/*
+ * @description: 获取问卷数据
+ */
 import { ResDataType } from "@/services/ajax";
 import { getQuestionService } from "@/services/question";
 import { ref, onMounted, watch } from "vue";
