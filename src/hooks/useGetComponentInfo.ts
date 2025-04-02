@@ -2,7 +2,7 @@
  * @Description 从vuex中获取组件信息的hook
  * */
 
-import { ComponentsStateType } from "@/store/componentsStore/store";
+import { ComponentsStateType } from "@/store/componentsStore/index";
 import { useStore } from "vuex";
 
 function useGetComponentInfo() {

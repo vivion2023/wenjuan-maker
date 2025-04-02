@@ -127,7 +127,7 @@ const onFinish = async (values) => {
   isSubmitting.value = true;
   try {
     const result = await run(username, password); // 执行 ajax
-    console.log("result", result);
+    // console.log("result", result);
 
     const token = result?.token || "";
 

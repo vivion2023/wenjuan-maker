@@ -1,7 +1,35 @@
 import { Module } from "vuex";
 import { ComponentPropsType } from "@/components/QuestionComponents";
-import { ComponentsStateType, INIT_STATE } from "./store";
 import { StateType } from "../index";
+import { insertNewComponent } from "./utils";
+
+/**
+ * @description 每个组件都有的组件type
+ * */
+export type ComponentInfoType = {
+  fe_id: string; //前端生成的 id ，服务端 Mongodb 不认这种格式，所以自定义一个 fe_id
+  type: string;
+  title: string;
+  isHidden?: boolean;
+  isLocked?: boolean;
+  props: ComponentPropsType;
+};
+
+/**
+ * @description 管理当前 数据列表 数据结构的type
+ * */
+export type ComponentsStateType = {
+  selectedId: string; //记录选中的组件id
+  componentList: Array<ComponentInfoType>;
+  copiedComponent: ComponentInfoType | null;
+};
+
+//默认状态
+export const INIT_STATE: ComponentsStateType = {
+  selectedId: "",
+  componentList: [],
+  copiedComponent: null,
+};
 
 const componentsModule: Module<ComponentsStateType, StateType> = {
   namespaced: true,
@@ -11,6 +39,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       state.selectedId = payload.selectedId;
       state.componentList = payload.componentList;
       state.copiedComponent = payload.copiedComponent;
+    },
+    ADD_COMPONENT(state, payload: ComponentInfoType) {
+      insertNewComponent(state, payload);
     },
     CHANGE_SELECTID(state, payload: { selectedId: string }) {
       state.selectedId = payload.selectedId;
@@ -42,6 +73,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
       commit("UPDATE_COMPONENT_PROPS", payload);
+    },
+    addComponent({ commit }, payload: ComponentInfoType) {
+      commit("ADD_COMPONENT", payload);
     },
   },
 };

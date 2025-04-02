@@ -24,7 +24,7 @@ const props = withDefaults(
 
 // 使用 ref 存储内部状态
 const formData = ref({ ...props });
-console.log(formData.value);
+// console.log(formData.value);
 
 // 监听 props 的变化
 watch(

@@ -10,16 +10,16 @@ import { getComponentConfByType } from "@/components/QuestionComponents";
 const store = useStore();
 
 const currentSelectedId = computed(() => {
-  console.log(store.state.componentsStore.selectedId);
+  // console.log(store.state.componentsStore.selectedId);
   return store.state.componentsStore.selectedId;
 });
 
 const type = computed(() => {
-  console.log(
-    store.state.componentsStore.componentList.find(
-      (c: any) => c.fe_id === currentSelectedId.value
-    )?.type
-  );
+  // console.log(
+  //   store.state.componentsStore.componentList.find(
+  //     (c: any) => c.fe_id === currentSelectedId.value
+  //   )?.type
+  // );
   return (
     store.state.componentsStore.componentList.find(
       (c: any) => c.fe_id === currentSelectedId.value
@@ -28,11 +28,11 @@ const type = computed(() => {
 });
 
 const props = computed(() => {
-  console.log(
-    store.state.componentsStore.componentList.find(
-      (c: any) => c.fe_id === currentSelectedId.value
-    )?.props
-  );
+  // console.log(
+  //   store.state.componentsStore.componentList.find(
+  //     (c: any) => c.fe_id === currentSelectedId.value
+  //   )?.props
+  // );
   return (
     store.state.componentsStore.componentList.find(
       (c: any) => c.fe_id === currentSelectedId.value

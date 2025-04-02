@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { ComponentsStateType } from "./componentsStore/store";
+import { ComponentsStateType } from "./componentsStore/index";
 import componentsModule from "./componentsStore";
 
 export type StateType = {
