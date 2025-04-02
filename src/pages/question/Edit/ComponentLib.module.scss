@@ -3,12 +3,10 @@
 }
 
 :deep(.ant-menu-item) {
-  height: 40px;
-  line-height: 40px;
-
-  &:hover {
-    background-color: #f0f2f5;
-  }
+  height: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #f7f7f7;
 }
 
 :deep(.ant-menu-item-group-title) {
@@ -16,4 +14,18 @@
   font-weight: 600;
   color: #272727;
   padding: 8px 16px;
+  margin: 0;
+}
+
+:deep(.ant-menu-item-group) {
+  padding: 0;
+}
+.component-lib {
+  height: 658px;
+}
+
+.component-lib-list {
+  height: 500px;
+  overflow: scroll;
+  overflow-x: hidden;
 }

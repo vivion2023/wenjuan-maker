@@ -24,14 +24,18 @@ const { title, placeholder } = props;
 </script>
 
 <style scoped>
+.question-textarea-component {
+  padding: 0;
+}
+
 .title {
   margin: 0;
   margin-bottom: 10px;
 }
 .textarea {
   width: 100%;
-  height: 100px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
+  padding: 10px;
 }
 </style>

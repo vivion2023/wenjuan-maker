@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <Title :level="3" :style="{ textAlign: 'center' }">{{ title }}</Title>
+  <div class="question-info">
+    <Title class="title" :level="3" :style="{ textAlign: 'center' }">{{
+      title
+    }}</Title>
     <Paragraph :style="{ textAlign: 'center' }">{{ desc }}</Paragraph>
   </div>
 </template>
@@ -18,3 +20,16 @@ const props = withDefaults(
 const { title, desc } = props;
 const { Title, Paragraph } = Typography;
 </script>
+
+<style scoped lang="scss">
+.question-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  padding: 0;
+  margin: 0;
+}
+</style>

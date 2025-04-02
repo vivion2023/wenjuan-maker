@@ -1,5 +1,10 @@
-<template>
-  <Menu mode="inline" :selectedKeys="[]" @click="handleMenuClick">
+<template class="component-lib">
+  <Menu
+    class="component-lib-list"
+    mode="inline"
+    :selectedKeys="[]"
+    @click="handleMenuClick"
+  >
     <!-- 文本显示 -->
     <Menu.ItemGroup
       v-for="group in componentConfGroup"
@@ -7,7 +12,7 @@
       :title="group.groupName"
     >
       <Menu.Item v-for="component in group.components" :key="component.type">
-        {{ component.title }}
+        <component :is="component.component" />
       </Menu.Item>
     </Menu.ItemGroup>
   </Menu>

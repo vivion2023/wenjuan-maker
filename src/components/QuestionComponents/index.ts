@@ -58,18 +58,18 @@ export const componentConfGroup = [
   {
     groupId: "textGroup",
     groupName: "文本显示",
-    components: [QuestionTitleConf],
+    components: [QuestionInfoConf, QuestionTitleConf, QuestionParagraphConf],
   },
   {
     groupId: "inputGroup",
     groupName: "用户输入",
-    components: [QuestionInputConf],
+    components: [QuestionInputConf, QuestionTextareaConf],
   },
-  // {
-  //   groupId: 'chooseGroup',
-  //   groupName: '用户选择',
-  //   components: [QuestionRadioConf, QuestionCheckboxConf],
-  // },
+  {
+    groupId: "chooseGroup",
+    groupName: "用户选择",
+    components: [QuestionRadioConf, QuestionCheckboxConf],
+  },
 ];
 
 /**
