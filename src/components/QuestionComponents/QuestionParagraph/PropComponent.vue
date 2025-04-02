@@ -15,7 +15,7 @@ import {
   QuestionParagraphPropsType,
   QuestionParagraphDefaultProps,
 } from "./interface";
-import { defineProps, withDefaults, ref } from "vue";
+import { defineProps, withDefaults, ref, watch } from "vue";
 
 const props = withDefaults(
   defineProps<QuestionParagraphPropsType>(),
@@ -23,4 +23,13 @@ const props = withDefaults(
 );
 
 const formData = ref<QuestionParagraphPropsType>(props);
+
+// 监听props变化，更新表单数据
+watch(
+  () => props,
+  (newProps) => {
+    formData.value = { ...newProps };
+  },
+  { deep: true }
+);
 </script>

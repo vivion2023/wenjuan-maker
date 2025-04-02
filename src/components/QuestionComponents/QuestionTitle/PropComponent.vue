@@ -45,14 +45,12 @@ const options = ref([
   },
 ]);
 
-const formData = ref({ ...props });
-console.log(formData.value);
+const formData = ref<QuestionTitlePropsType>(props);
 
 // 监听props变化，更新表单数据
 watch(
   () => props,
   (newProps) => {
-    console.log("新 props:", newProps); // 添加调试输出
     formData.value = { ...newProps };
   },
   { deep: true }

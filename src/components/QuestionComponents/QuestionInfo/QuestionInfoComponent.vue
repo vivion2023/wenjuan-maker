@@ -1,7 +1,7 @@
 <template>
   <div>
     <Title :level="3" :style="{ textAlign: 'center' }">{{ title }}</Title>
-    <Paragraph :style="{ textAlign: 'center' }">{{ description }}</Paragraph>
+    <Paragraph :style="{ textAlign: 'center' }">{{ desc }}</Paragraph>
   </div>
 </template>
 
@@ -15,7 +15,6 @@ const props = withDefaults(
   QuestionInfoDefaultProps
 );
 
-const { title, description } = props;
-
+const { title, desc } = props;
 const { Title, Paragraph } = Typography;
 </script>
