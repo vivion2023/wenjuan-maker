@@ -3,6 +3,7 @@
  * */
 
 import { ComponentsStateType } from "@/store/componentsStore/index";
+import { reactive } from "vue";
 import { useStore } from "vuex";
 
 function useGetComponentInfo() {

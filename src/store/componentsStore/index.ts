@@ -34,6 +34,9 @@ export const INIT_STATE: ComponentsStateType = {
 const componentsModule: Module<ComponentsStateType, StateType> = {
   namespaced: true,
   state: INIT_STATE,
+  getters: {
+    currentSelectedComponentId: (state) => state.selectedId,
+  },
   mutations: {
     RESET_COMPONENTS(state, payload: ComponentsStateType) {
       state.selectedId = payload.selectedId;
@@ -51,13 +54,16 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
       const { fe_id, newProps } = payload;
-      const component = state.componentList.find((c) => c.fe_id === fe_id);
-      if (component) {
-        // 更新组件的属性
+      const index = state.componentList.findIndex((c) => c.fe_id === fe_id);
+      if (index !== -1) {
+        // 创建组件的新副本并更新属性，确保Vue能检测到变化
+        const component = { ...state.componentList[index] };
         component.props = {
           ...component.props,
           ...newProps,
         };
+        // 替换数组中的组件对象，触发响应式更新
+        state.componentList.splice(index, 1, component);
       }
     },
   },
@@ -72,6 +78,7 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       { commit },
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
+      console.log("payload", payload);
       commit("UPDATE_COMPONENT_PROPS", payload);
     },
     addComponent({ commit }, payload: ComponentInfoType) {

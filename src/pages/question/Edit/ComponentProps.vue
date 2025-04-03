@@ -3,16 +3,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { getComponentConfByType } from "@/components/QuestionComponents";
 
 const store = useStore();
 
-const currentSelectedId = computed(() => {
-  // console.log(store.state.componentsStore.selectedId);
-  return store.state.componentsStore.selectedId;
-});
+const currentSelectedId = computed(
+  () => store.state.componentsStore.selectedId
+);
 
 const type = computed(() => {
   // console.log(

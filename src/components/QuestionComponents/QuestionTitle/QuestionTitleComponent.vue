@@ -1,14 +1,14 @@
 <template>
   <div>
     <Title
-      :level="level"
+      :level="levelValue"
       :style="{
-        textAlign: isCenter ? 'center' : 'left',
+        textAlign: isCenterValue ? 'center' : 'left',
         margin: 0,
         fontSize: getFontSize,
       }"
     >
-      {{ title }}
+      {{ titleValue }}
     </Title>
   </div>
 </template>
@@ -24,10 +24,17 @@ const props = withDefaults(
   QuestionTitleDefaultProps
 );
 
-const { title, level, isCenter } = props;
+// 使用computed属性从props中获取值，确保响应式更新
+const titleValue = computed(() => props.title);
+const levelValue = computed(() => props.level);
+const isCenterValue = computed(() => props.isCenter);
 
 const getFontSize = computed(() => {
-  return level === 1 ? "24px" : level === 2 ? "20px" : "16px";
+  return levelValue.value === 1
+    ? "24px"
+    : levelValue.value === 2
+      ? "20px"
+      : "16px";
 });
 </script>
 

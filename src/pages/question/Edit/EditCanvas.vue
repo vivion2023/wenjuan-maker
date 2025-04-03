@@ -8,14 +8,14 @@
       :key="item.fe_id"
       class="component-wrapper"
       :class="{
-        selected: item.fe_id === currentSelectedId,
+        selected: item.fe_id === selectedId,
       }"
       @click.stop="handleClick(item)"
     >
       <div class="component-container">
         <component
-          v-if="genComponentByType(item.type)"
-          :is="genComponentByType(item.type)"
+          v-if="getComponentType(item.type)"
+          :is="getComponentType(item.type)"
           v-bind="item.props"
         />
       </div>
@@ -34,14 +34,11 @@ import useGetComponentInfo from "@/hooks/useGetComponentInfo";
 
 const route = useRoute();
 const store = useStore(); // 获取 store 实例
-const { selectedId } = useGetComponentInfo(); // 获取选中组件的 id
 
 const { data, loading, error } = useLoadQuestionData(route.params.id as string);
 
-const componentList = computed(() => {
-  if (!data.value) return [];
-  return data.value.componentList || [];
-});
+const selectedId = computed(() => store.state.componentsStore.selectedId);
+const componentList = computed(() => store.state.componentsStore.componentList);
 
 // 监听 componentList 的变化，设置默认选中项
 watch(
@@ -57,15 +54,13 @@ watch(
   { immediate: true }
 );
 
-const currentSelectedId = computed(() => {
-  return store.state.componentsStore.selectedId;
-});
-
-const genComponentByType = (type: string) => {
+// 这里只返回组件类型，不创建新实例
+const getComponentType = (type: string) => {
   const conf = getComponentConfByType(type);
   if (!conf) return null;
   return conf.component;
 };
+
 const handleClick = (item: any) => {
   store.dispatch("componentsStore/changeSelectedID", {
     selectedId: item.fe_id,
