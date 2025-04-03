@@ -1,44 +1,50 @@
 <template>
-  <Form :model="props" layout="vertical">
-    <FormItem
-      label="标题"
-      name="title"
-      required
-      :label-col="{ span: 24 }"
-      :wrapper-col="{ span: 24 }"
-    >
-      <el-input v-model="props.title" />
+  <Form :model="formData" layout="vertical" :disabled="disabled">
+    <FormItem label="标题" name="title" required>
+      <Input
+        id="title"
+        name="title"
+        v-model:value="formData.title"
+        @change="handleChange"
+      />
     </FormItem>
-    <FormItem
-      label="选项"
-      name="options"
-      :label-col="{ span: 24 }"
-      :wrapper-col="{ span: 24 }"
-    >
-      <template v-for="(option, index) in options" :key="index">
-        <el-input v-model="option.text" />
-      </template>
-      <el-link link type="primary" @click="addOption" style="margin: 0 auto"
-        >+ 添加选项</el-link
+    <div class="form-group">
+      <div class="form-label">选项</div>
+      <div class="options-container">
+        <div v-for="(option, index) in formData.options" :key="index">
+          <FormItem :name="['options', index, 'text']" :key="index">
+            <div class="option-item">
+              <Input v-model:value="option.text" @change="handleChange" />
+              <div
+                v-if="formData.options && formData.options.length > 1"
+                @click="removeOption(index)"
+              >
+                <MinusOutlined />
+              </div>
+            </div>
+          </FormItem>
+        </div>
+        <Button type="link" @click="addOption">+ 添加选项</Button>
+      </div>
+    </div>
+    <FormItem label="默认选中" name="defaultOption">
+      <Select
+        v-model:value="formData.defaultOption"
+        style="width: 100%"
+        @change="handleChange"
       >
-    </FormItem>
-    <FormItem
-      label="默认选中"
-      name="defaultOption"
-      :label-col="{ span: 24 }"
-      :wrapper-col="{ span: 24 }"
-    >
-      <el-select placeholder="Select" size="large" style="width: 240px">
-        <select-option
-          v-for="option in options"
+        <SelectOption
+          v-for="option in formData.options"
           :key="option.value"
-          :label="option.value"
-          :value="option.text"
-        />
-      </el-select>
+          :value="option.value"
+          :label="option.text"
+        >
+          {{ option.text }}
+        </SelectOption>
+      </Select>
     </FormItem>
     <FormItem label="竖向排列" name="isVertical">
-      <Switch v-model="props.isVertical" />
+      <Switch v-model:checked="formData.isVertical" @change="handleChange" />
     </FormItem>
   </Form>
 </template>
@@ -49,35 +55,103 @@ import {
   QuestionRadioDefaultProps,
   OptionType,
 } from "./interface";
-import { ref, withDefaults, defineProps } from "vue";
+import { withDefaults, defineProps, reactive, watch } from "vue";
 import {
   Form,
-  Input,
   FormItem,
+  Input,
   Switch,
   Select,
   SelectOption,
+  Button,
 } from "ant-design-vue";
+import { MinusOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const props = withDefaults(
   defineProps<QuestionRadioPropsType>(),
   QuestionRadioDefaultProps
 );
 
-const options = ref<OptionType[]>(props.options || []);
+const formData = reactive<QuestionRadioPropsType>({
+  title: props.title,
+  options: props.options,
+  isVertical: props.isVertical,
+  defaultOption: props.defaultOption,
+  value: props.value,
+  onChange: props.onChange,
+  disabled: props.disabled,
+});
+console.log(formData.defaultOption);
+
+// 监听props变化，更新表单数据
+watch(
+  props,
+  (newProps) => {
+    formData.title = newProps.title;
+    formData.options = newProps.options ? [...newProps.options] : [];
+    formData.isVertical = newProps.isVertical;
+    formData.defaultOption = newProps.defaultOption;
+    formData.value = newProps.value;
+    formData.onChange = newProps.onChange;
+    formData.disabled = newProps.disabled;
+  },
+  { deep: true }
+);
 
 const addOption = () => {
-  options.value.push({
-    value: "item" + (options.value.length + 1),
-    text: "选项" + (options.value.length + 1),
+  if (!formData.options) formData.options = [];
+  formData.options.push({
+    value: "item" + (formData.options.length + 1),
+    text: "选项" + (formData.options.length + 1),
+  });
+  handleChange();
+};
+
+const removeOption = (index: number) => {
+  if (formData.options && formData.options.length > 1) {
+    formData.options.splice(index, 1);
+    handleChange();
+  }
+};
+
+const handleChange = () => {
+  const fe_id = store.getters["componentsStore/currentSelectedComponentId"];
+
+  // 创建一个新的对象，确保Vuex能检测到变化
+  const newProps = {
+    title: formData.title,
+    options: formData.options ? [...formData.options] : [],
+    isVertical: formData.isVertical,
+    defaultOption: formData.defaultOption,
+  };
+
+  store.dispatch("componentsStore/updateComponentProps", {
+    fe_id,
+    newProps,
   });
 };
 </script>
 
 <style scoped>
+:deep(.ant-form-item) {
+  margin-bottom: 12px;
+}
+
 .options-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+}
+
+.form-label {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
 }
 </style>
