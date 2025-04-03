@@ -1,23 +1,25 @@
 <template>
   <div class="question-info">
     <Title class="title" :level="3" :style="{ textAlign: 'center' }">{{
-      title
+      titleValue
     }}</Title>
-    <Paragraph :style="{ textAlign: 'center' }">{{ desc }}</Paragraph>
+    <Paragraph :style="{ textAlign: 'center' }">{{ descValue }}</Paragraph>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Typography } from "ant-design-vue";
 import { QuestionInfoDefaultProps, QuestionInfoPropsType } from "./interface";
-import { withDefaults, defineProps } from "vue";
+import { withDefaults, defineProps, computed } from "vue";
 
 const props = withDefaults(
   defineProps<QuestionInfoPropsType>(),
   QuestionInfoDefaultProps
 );
 
-const { title, desc } = props;
+const titleValue = computed(() => props.title);
+const descValue = computed(() => props.desc);
+
 const { Title, Paragraph } = Typography;
 </script>
 

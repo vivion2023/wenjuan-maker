@@ -1,6 +1,8 @@
 export type QuestionParagraphPropsType = {
   content?: string;
   isCenter?: boolean;
+  onChange?: (newProps: QuestionParagraphPropsType) => void;
+  disabled?: boolean;
 };
 
 export const QuestionParagraphDefaultProps: QuestionParagraphPropsType = {

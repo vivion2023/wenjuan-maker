@@ -1,12 +1,12 @@
 <template>
   <div class="question-textarea-component">
-    <Paragraph strong>{{ title }}</Paragraph>
-    <textarea class="textarea" :placeholder="placeholder"></textarea>
+    <Paragraph strong>{{ titleValue }}</Paragraph>
+    <textarea class="textarea" :placeholder="placeholderValue"></textarea>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, withDefaults, defineProps } from "vue";
+import { computed, withDefaults, defineProps } from "vue";
 import { Typography } from "ant-design-vue";
 import {
   QuestionTextareaPropsType,
@@ -20,7 +20,8 @@ const props = withDefaults(
   QuestionTextareaDefaultProps
 );
 
-const { title, placeholder } = props;
+const titleValue = computed(() => props.title);
+const placeholderValue = computed(() => props.placeholder);
 </script>
 
 <style scoped>

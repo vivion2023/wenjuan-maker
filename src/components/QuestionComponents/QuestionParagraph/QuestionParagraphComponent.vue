@@ -3,9 +3,10 @@
     <Paragraph
       :style="{
         margin: 0,
+        textAlign: isCenterValue ? 'center' : 'left',
       }"
     >
-      {{ content }}
+      {{ contentValue }}
     </Paragraph>
   </div>
 </template>
@@ -16,7 +17,7 @@ import {
   QuestionParagraphPropsType,
   QuestionParagraphDefaultProps,
 } from "./interface";
-import { defineProps, withDefaults } from "vue";
+import { defineProps, withDefaults, computed } from "vue";
 
 const { Paragraph } = Typography;
 const props = withDefaults(
@@ -24,5 +25,6 @@ const props = withDefaults(
   QuestionParagraphDefaultProps
 );
 
-const { content } = props;
+const contentValue = computed(() => props.content);
+const isCenterValue = computed(() => props.isCenter);
 </script>

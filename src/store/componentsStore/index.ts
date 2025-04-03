@@ -78,7 +78,6 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       { commit },
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
-      console.log("payload", payload);
       commit("UPDATE_COMPONENT_PROPS", payload);
     },
     addComponent({ commit }, payload: ComponentInfoType) {
