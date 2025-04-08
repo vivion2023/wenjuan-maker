@@ -1,0 +1,46 @@
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .layers-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #62aaf3;
+      color: #fff;
+    }
+  }
+
+  .isClick {
+    background-color: #409eff;
+    color: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #62aaf3;
+      color: #fff;
+    }
+  }
+}

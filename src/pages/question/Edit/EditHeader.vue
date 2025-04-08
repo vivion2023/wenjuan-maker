@@ -142,10 +142,16 @@ const store = useStore();
 
 const isEditTitle = ref(false);
 const title = ref("");
-const { selectedComponent, copiedComponent } = useGetComponentInfo();
+const { selectedId, selectedComponent, copiedComponent } =
+  useGetComponentInfo();
 const isLocked = computed(() => {
   const component = selectedComponent.value;
   return component ? component.isLocked || false : false;
+});
+
+const isHidden = computed(() => {
+  const component = selectedComponent.value;
+  return component ? component.isHidden || false : false;
 });
 
 const handleDelete = () => {
@@ -155,11 +161,17 @@ const handleDelete = () => {
 
 const handleHide = () => {
   if (isLocked.value) return;
-  store.dispatch("componentsStore/hideComponent");
+  store.dispatch("componentsStore/hideComponent", {
+    fe_id: selectedId.value,
+    isHidden: isHidden.value,
+  });
 };
 
 const handleLock = () => {
-  store.dispatch("componentsStore/lockComponent");
+  store.dispatch("componentsStore/lockComponent", {
+    fe_id: selectedId.value,
+    isLocked: isLocked.value,
+  });
 };
 
 const handleCopy = () => {

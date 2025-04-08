@@ -78,30 +78,25 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
         state.selectedId = "";
       }
     },
-    HIDE_COMPONENT(state) {
-      const selectedId = state.selectedId;
-      const index = state.componentList.findIndex(
-        (c) => c.fe_id === selectedId
-      );
+    HIDE_COMPONENT(state, payload: { fe_id: string; isHidden: boolean }) {
+      const { fe_id } = payload;
+      const index = state.componentList.findIndex((c) => c.fe_id === fe_id);
       if (index !== -1) {
         // 先获取下一个要选中的组件ID
         const nextSelectedId = getNextSelectedId(state, state.componentList);
 
         // 然后设置组件为隐藏
-        state.componentList[index].isHidden = true;
+        state.componentList[index].isHidden = !payload.isHidden;
 
         // 最后更新选中的组件ID
         state.selectedId = nextSelectedId;
       }
     },
-    LOCK_COMPONENT(state) {
-      const selectedId = state.selectedId;
-      const index = state.componentList.findIndex(
-        (c) => c.fe_id === selectedId
-      );
+    LOCK_COMPONENT(state, payload: { fe_id: string; isLocked: boolean }) {
+      const { fe_id } = payload;
+      const index = state.componentList.findIndex((c) => c.fe_id === fe_id);
       if (index !== -1) {
-        state.componentList[index].isLocked =
-          !state.componentList[index].isLocked;
+        state.componentList[index].isLocked = !payload.isLocked;
       }
     },
     COPY_COMPONENT(state) {
@@ -158,11 +153,11 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     deleteComponent({ commit }) {
       commit("DELETE_COMPONENT");
     },
-    hideComponent({ commit }) {
-      commit("HIDE_COMPONENT");
+    hideComponent({ commit }, payload: { fe_id: string; isHidden: boolean }) {
+      commit("HIDE_COMPONENT", payload);
     },
-    lockComponent({ commit }) {
-      commit("LOCK_COMPONENT");
+    lockComponent({ commit }, payload: { fe_id: string; isLocked: boolean }) {
+      commit("LOCK_COMPONENT", payload);
     },
     copyComponent({ commit }) {
       commit("COPY_COMPONENT");

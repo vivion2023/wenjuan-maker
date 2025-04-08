@@ -17,7 +17,7 @@
           图层
         </span>
       </template>
-      图层
+      <Layers />
     </Tabs.TabPane>
   </Tabs>
 </template>
@@ -26,6 +26,7 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons-vue";
 import { Tabs } from "ant-design-vue";
 import ComponentLib from "./ComponentLib.vue";
+import Layers from "./Layers.vue";
 </script>
 
 <style scoped>
