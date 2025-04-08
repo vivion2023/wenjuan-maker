@@ -67,7 +67,7 @@ import {
 } from "ant-design-vue";
 import { MinusOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-
+import { nanoid } from "nanoid";
 const store = useStore();
 
 const props = withDefaults(
@@ -104,8 +104,8 @@ watch(
 const addOption = () => {
   if (!formData.options) formData.options = [];
   formData.options.push({
-    value: "item" + (formData.options.length + 1),
-    text: "选项" + (formData.options.length + 1),
+    value: nanoid(),
+    text: "选项",
   });
   handleChange();
 };

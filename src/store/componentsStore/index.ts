@@ -116,8 +116,11 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     PASTE_COMPONENT(state) {
       const { copiedComponent } = state;
       if (copiedComponent === null) return;
-      copiedComponent.fe_id = nanoid();
-      insertNewComponent(state, copiedComponent);
+      // 创建深拷贝并生成新的 fe_id
+      const newComponent = cloneDeep(copiedComponent);
+      newComponent.fe_id = nanoid();
+      insertNewComponent(state, newComponent);
+      state.selectedId = newComponent.fe_id;
     },
     SELECT_PREVIOUS_COMPONENT(state) {
       const selectedId = state.selectedId;
