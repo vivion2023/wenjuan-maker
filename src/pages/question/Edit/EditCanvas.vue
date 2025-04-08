@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { Spin } from "ant-design-vue";
-import { computed, onMounted, watch, ref } from "vue";
+import { computed, onMounted, watch, ref, onUnmounted } from "vue";
 import { useLoadQuestionData } from "@/hooks/useLoadQuestionData";
 import { useRoute } from "vue-router";
 import { getComponentConfByType } from "@/components/QuestionComponents";
@@ -37,7 +37,9 @@ import useBindCanvasKeyPress from "@/hooks/useBindCanvasKeyPress";
 const route = useRoute();
 const store = useStore(); // 获取 store 实例
 
-useBindCanvasKeyPress();
+// 保存清理函数
+const unbindKeyPress = useBindCanvasKeyPress();
+
 const { data, loading, error } = useLoadQuestionData(route.params.id as string);
 
 const selectedId = computed(() => store.state.componentsStore.selectedId);
@@ -71,6 +73,11 @@ const handleClick = (item: any) => {
     selectedId: item.fe_id,
   });
 };
+
+// 组件卸载时清理
+onUnmounted(() => {
+  unbindKeyPress();
+});
 </script>
 
 <style scoped lang="scss">

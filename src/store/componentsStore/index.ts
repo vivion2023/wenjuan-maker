@@ -119,6 +119,22 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       copiedComponent.fe_id = nanoid();
       insertNewComponent(state, copiedComponent);
     },
+    SELECT_PREVIOUS_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index <= 0) return;
+      state.selectedId = state.componentList[index - 1].fe_id;
+    },
+    SELECT_NEXT_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index >= state.componentList.length - 1) return;
+      state.selectedId = state.componentList[index + 1].fe_id;
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -150,6 +166,12 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     pasteComponent({ commit }) {
       commit("PASTE_COMPONENT");
+    },
+    selectPreviousComponent({ commit }) {
+      commit("SELECT_PREVIOUS_COMPONENT");
+    },
+    selectNextComponent({ commit }) {
+      commit("SELECT_NEXT_COMPONENT");
     },
   },
 };
