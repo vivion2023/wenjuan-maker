@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="header-mid">
-      <div class="header-mid-item">
+      <div class="header-mid-item" @click="handleDelete">
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -137,100 +137,18 @@ import {
   Edit,
 } from "@element-plus/icons-vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const isEditTitle = ref(false);
 const title = ref("");
+
+const handleDelete = () => {
+  store.dispatch("componentsStore/deleteComponent");
+};
 </script>
 
 <style scoped lang="scss">
-.edit-header {
-  height: 60px;
-  width: 100%;
-  padding: 0 50px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid #e4e4e4;
-
-  .header-left {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-
-    .back-link {
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    .title-container {
-      display: flex;
-      align-items: center;
-      margin-top: 0;
-
-      .title-display {
-        display: flex;
-        align-items: center;
-        line-height: 1;
-        gap: 8px;
-
-        .title-text {
-          font-size: 16px;
-          font-weight: 500;
-          color: #1d2129;
-          line-height: 1;
-        }
-
-        .edit-icon {
-          cursor: pointer;
-          color: #909399;
-          margin-left: 4px;
-          &:hover {
-            color: #409eff;
-          }
-        }
-      }
-
-      .title-input {
-        width: 300px;
-        :deep(.el-input__inner) {
-          font-size: 20px;
-          font-weight: 500;
-        }
-      }
-    }
-  }
-
-  .header-mid {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-
-    .header-mid-item {
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      padding: 6px;
-      border-radius: 50%;
-
-      &:hover {
-        background-color: #dedede;
-      }
-    }
-  }
-
-  .header-right {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-
-    .action-button {
-      min-width: 80px;
-    }
-  }
-}
+@use "./EditHeader.module.scss" as *;
 </style>

@@ -66,6 +66,16 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
         state.componentList.splice(index, 1, component);
       }
     },
+    DELETE_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index !== -1) {
+        state.componentList.splice(index, 1);
+        state.selectedId = "";
+      }
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -82,6 +92,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     addComponent({ commit }, payload: ComponentInfoType) {
       commit("ADD_COMPONENT", payload);
+    },
+    deleteComponent({ commit }) {
+      commit("DELETE_COMPONENT");
     },
   },
 };
