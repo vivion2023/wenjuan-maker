@@ -2,6 +2,8 @@ import { Module } from "vuex";
 import { ComponentPropsType } from "@/components/QuestionComponents";
 import { StateType } from "../index";
 import { insertNewComponent, getNextSelectedId } from "./utils";
+import { cloneDeep } from "lodash";
+import { nanoid } from "nanoid";
 
 /**
  * @description 每个组件都有的组件type
@@ -102,6 +104,21 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
           !state.componentList[index].isLocked;
       }
     },
+    COPY_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index !== -1) {
+        state.copiedComponent = cloneDeep(state.componentList[index]);
+      }
+    },
+    PASTE_COMPONENT(state) {
+      const { copiedComponent } = state;
+      if (copiedComponent === null) return;
+      copiedComponent.fe_id = nanoid();
+      insertNewComponent(state, copiedComponent);
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -127,6 +144,12 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     lockComponent({ commit }) {
       commit("LOCK_COMPONENT");
+    },
+    copyComponent({ commit }) {
+      commit("COPY_COMPONENT");
+    },
+    pasteComponent({ commit }) {
+      commit("PASTE_COMPONENT");
     },
   },
 };

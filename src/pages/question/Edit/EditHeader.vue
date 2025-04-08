@@ -50,7 +50,7 @@
       </div>
       <div
         class="header-mid-item"
-        :class="{ disabled: isLocked }"
+        :class="{ isLocked: isLocked }"
         @click="handleLock"
       >
         <el-tooltip
@@ -62,7 +62,7 @@
           <el-icon><Lock /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div class="header-mid-item" @click="handleCopy">
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -72,7 +72,11 @@
           <el-icon><CopyDocument /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div
+        class="header-mid-item"
+        @click="handlePaste"
+        :class="{ disabled: !copiedComponent }"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -138,7 +142,7 @@ const store = useStore();
 
 const isEditTitle = ref(false);
 const title = ref("");
-const { selectedComponent } = useGetComponentInfo();
+const { selectedComponent, copiedComponent } = useGetComponentInfo();
 const isLocked = computed(() => {
   const component = selectedComponent.value;
   return component ? component.isLocked || false : false;
@@ -156,6 +160,16 @@ const handleHide = () => {
 
 const handleLock = () => {
   store.dispatch("componentsStore/lockComponent");
+};
+
+const handleCopy = () => {
+  if (isLocked.value) return;
+  store.dispatch("componentsStore/copyComponent");
+};
+
+const handlePaste = () => {
+  if (!copiedComponent.value) return;
+  store.dispatch("componentsStore/pasteComponent");
 };
 </script>
 
