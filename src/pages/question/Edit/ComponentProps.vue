@@ -1,43 +1,27 @@
 <template>
-  <component :is="genComponentByType(type)" v-bind="props" />
+  <component
+    :is="genComponentByType(type)"
+    v-bind="props"
+    :disabled="isLocked"
+  />
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { getComponentConfByType } from "@/components/QuestionComponents";
+import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 
 const store = useStore();
+
+const { selectedComponent } = useGetComponentInfo();
+const type = computed(() => selectedComponent.value?.type);
+const props = computed(() => selectedComponent.value?.props);
+const isLocked = computed(() => selectedComponent.value?.isLocked);
 
 const currentSelectedId = computed(
   () => store.state.componentsStore.selectedId
 );
-
-const type = computed(() => {
-  // console.log(
-  //   store.state.componentsStore.componentList.find(
-  //     (c: any) => c.fe_id === currentSelectedId.value
-  //   )?.type
-  // );
-  return (
-    store.state.componentsStore.componentList.find(
-      (c: any) => c.fe_id === currentSelectedId.value
-    )?.type || ""
-  );
-});
-
-const props = computed(() => {
-  // console.log(
-  //   store.state.componentsStore.componentList.find(
-  //     (c: any) => c.fe_id === currentSelectedId.value
-  //   )?.props
-  // );
-  return (
-    store.state.componentsStore.componentList.find(
-      (c: any) => c.fe_id === currentSelectedId.value
-    )?.props || {}
-  );
-});
 
 // 获取组件配置信息
 const componentConf = computed(() => {

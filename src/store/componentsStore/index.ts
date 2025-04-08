@@ -92,6 +92,16 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
         state.selectedId = nextSelectedId;
       }
     },
+    LOCK_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index !== -1) {
+        state.componentList[index].isLocked =
+          !state.componentList[index].isLocked;
+      }
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -114,6 +124,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     hideComponent({ commit }) {
       commit("HIDE_COMPONENT");
+    },
+    lockComponent({ commit }) {
+      commit("LOCK_COMPONENT");
     },
   },
 };

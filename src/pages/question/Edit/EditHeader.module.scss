@@ -68,10 +68,34 @@
       width: 30px;
       height: 30px;
       padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 50%;
+      transition: all 0.3s ease;
 
       &:hover {
         background-color: #dedede;
+        color: #000;
+      }
+    }
+    .disabled {
+      background-color: #ebebeb;
+      color: #bebebe;
+      cursor: not-allowed;
+      &:hover {
+        background-color: #ebebeb;
+        color: #bebebe;
+      }
+    }
+    .isLocked {
+      background-color: #409eff;
+      color: #fff;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #62aaf3;
+        color: #fff;
       }
     }
   }

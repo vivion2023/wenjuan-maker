@@ -20,7 +20,11 @@
       </div>
     </div>
     <div class="header-mid">
-      <div class="header-mid-item" @click="handleDelete">
+      <div
+        class="header-mid-item"
+        :class="{ disabled: isLocked }"
+        @click="handleDelete"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -30,7 +34,11 @@
           <el-icon><Delete /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item" @click="handleHide">
+      <div
+        class="header-mid-item"
+        :class="{ disabled: isLocked }"
+        @click="handleHide"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -40,7 +48,11 @@
           <el-icon><Hide /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div
+        class="header-mid-item"
+        :class="{ disabled: isLocked }"
+        @click="handleLock"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -119,47 +131,31 @@
 </template>
 
 <script setup>
-import {
-  ElLink,
-  ElButton,
-  ElInput,
-  ElTitle,
-  ElIcon,
-  ElTooltip,
-  ElPopover,
-  ElDropdown,
-  ElDropdownMenu,
-  ElDropdownItem,
-  ElDialog,
-  ElForm,
-  ElFormItem,
-  ElInputNumber,
-  ElSelect,
-  ElOption,
-} from "element-plus";
-import {
-  Delete,
-  Lock,
-  CopyDocument,
-  DocumentCopy,
-  ArrowUp,
-  ArrowDown,
-  Edit,
-} from "@element-plus/icons-vue";
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
-
+import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 const store = useStore();
 
 const isEditTitle = ref(false);
 const title = ref("");
+const { selectedComponent } = useGetComponentInfo();
+const isLocked = computed(() => {
+  const component = selectedComponent.value;
+  return component ? component.isLocked || false : false;
+});
 
 const handleDelete = () => {
+  if (isLocked.value) return;
   store.dispatch("componentsStore/deleteComponent");
 };
 
 const handleHide = () => {
+  if (isLocked.value) return;
   store.dispatch("componentsStore/hideComponent");
+};
+
+const handleLock = () => {
+  store.dispatch("componentsStore/lockComponent");
 };
 </script>
 
