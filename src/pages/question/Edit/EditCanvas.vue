@@ -32,10 +32,12 @@ import { useRoute } from "vue-router";
 import { getComponentConfByType } from "@/components/QuestionComponents";
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
+import useBindCanvasKeyPress from "@/hooks/useBindCanvasKeyPress";
 
 const route = useRoute();
 const store = useStore(); // 获取 store 实例
 
+useBindCanvasKeyPress();
 const { data, loading, error } = useLoadQuestionData(route.params.id as string);
 
 const selectedId = computed(() => store.state.componentsStore.selectedId);
