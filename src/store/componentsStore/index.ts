@@ -1,7 +1,7 @@
 import { Module } from "vuex";
 import { ComponentPropsType } from "@/components/QuestionComponents";
 import { StateType } from "../index";
-import { insertNewComponent } from "./utils";
+import { insertNewComponent, getNextSelectedId } from "./utils";
 
 /**
  * @description 每个组件都有的组件type
@@ -76,6 +76,22 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
         state.selectedId = "";
       }
     },
+    HIDE_COMPONENT(state) {
+      const selectedId = state.selectedId;
+      const index = state.componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      if (index !== -1) {
+        // 先获取下一个要选中的组件ID
+        const nextSelectedId = getNextSelectedId(state, state.componentList);
+
+        // 然后设置组件为隐藏
+        state.componentList[index].isHidden = true;
+
+        // 最后更新选中的组件ID
+        state.selectedId = nextSelectedId;
+      }
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -95,6 +111,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     deleteComponent({ commit }) {
       commit("DELETE_COMPONENT");
+    },
+    hideComponent({ commit }) {
+      commit("HIDE_COMPONENT");
     },
   },
 };

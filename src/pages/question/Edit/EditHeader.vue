@@ -30,6 +30,16 @@
           <el-icon><Delete /></el-icon>
         </el-tooltip>
       </div>
+      <div class="header-mid-item" @click="handleHide">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="隐藏"
+          placement="bottom"
+        >
+          <el-icon><Hide /></el-icon>
+        </el-tooltip>
+      </div>
       <div class="header-mid-item">
         <el-tooltip
           class="box-item"
@@ -146,6 +156,10 @@ const title = ref("");
 
 const handleDelete = () => {
   store.dispatch("componentsStore/deleteComponent");
+};
+
+const handleHide = () => {
+  store.dispatch("componentsStore/hideComponent");
 };
 </script>
 
