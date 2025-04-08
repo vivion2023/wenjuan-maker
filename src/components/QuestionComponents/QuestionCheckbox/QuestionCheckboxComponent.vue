@@ -1,14 +1,24 @@
 <template>
-  <Paragraph strong>{{ title }}</Paragraph>
-  <CheckboxGroup v-model="checkbox">
-    <template v-for="option in list" :key="option.value">
-      <Checkbox :value="option.value">{{ option.text }}</Checkbox>
-    </template>
+  <Paragraph strong>{{ titleValue }}</Paragraph>
+  <CheckboxGroup
+    :value="checkboxValue"
+    :style="{
+      display: 'flex',
+      flexDirection: isVerticalValue ? 'column' : 'row',
+    }"
+  >
+    <Checkbox
+      v-for="option in listValue"
+      :key="option.value"
+      :value="option.value"
+    >
+      {{ option.text }}
+    </Checkbox>
   </CheckboxGroup>
 </template>
 
 <script setup lang="ts">
-import { ref, withDefaults, defineProps } from "vue";
+import { withDefaults, defineProps, computed } from "vue";
 import { Typography, Checkbox, CheckboxGroup } from "ant-design-vue";
 import {
   QuestionCheckboxPropsType,
@@ -21,9 +31,12 @@ const props = withDefaults(
   QuestionCheckboxDefaultProps
 );
 
-const { title, list } = props;
+const titleValue = computed(() => props.title);
+const listValue = computed(() => props.list || []);
+const isVerticalValue = computed(() => props.isVertical);
 
-const checkbox = ref(list);
+// 优先使用value作为选中值，如果没有则使用defaultOption
+const checkboxValue = computed(() => props.value || props.defaultOption);
 </script>
 
 <style scoped>
