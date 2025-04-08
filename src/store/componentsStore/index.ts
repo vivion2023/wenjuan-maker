@@ -79,16 +79,20 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       }
     },
     HIDE_COMPONENT(state, payload: { fe_id: string; isHidden: boolean }) {
-      const { fe_id } = payload;
+      const { fe_id, isHidden } = payload;
       const index = state.componentList.findIndex((c) => c.fe_id === fe_id);
       if (index !== -1) {
-        // 先获取下一个要选中的组件ID
-        const nextSelectedId = getNextSelectedId(state, state.componentList);
+        // 更新组件的隐藏状态
+        state.componentList[index].isHidden = !isHidden;
 
-        // 然后设置组件为隐藏
-        state.componentList[index].isHidden = !payload.isHidden;
+        // 获取下一个要选中的组件ID
+        const nextSelectedId = getNextSelectedId(
+          state,
+          state.componentList,
+          !isHidden
+        );
 
-        // 最后更新选中的组件ID
+        // 更新选中的组件ID
         state.selectedId = nextSelectedId;
       }
     },

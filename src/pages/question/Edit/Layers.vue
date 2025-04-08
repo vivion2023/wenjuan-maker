@@ -27,9 +27,11 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
-
+import { ref } from "vue";
 const store = useStore();
 const { componentList } = useGetComponentInfo();
+
+const isEdit = ref(false);
 
 const handleHide = (fe_id: string, isHidden: boolean) => {
   store.dispatch("componentsStore/hideComponent", {

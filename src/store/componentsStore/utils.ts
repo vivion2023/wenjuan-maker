@@ -29,34 +29,37 @@ export function insertNewComponent(
 
 export function getNextSelectedId(
   state: ComponentsStateType,
-  componentList: ComponentInfoType[]
+  componentList: ComponentInfoType[],
+  isHidden: boolean // 新增参数，表示是隐藏还是取消隐藏
 ) {
   // 获取当前选中的组件ID
   const currentSelectedId = state.selectedId;
 
-  // 获取可见组件列表（不包括当前要隐藏的组件）
-  const visibleComponentList = componentList.filter((c) => !c.isHidden);
-
-  // 如果隐藏后没有可见组件了，返回空字符串
-  if (visibleComponentList.length === 0) {
-    return "";
+  // 如果是取消隐藏，直接返回当前组件的ID
+  if (!isHidden) {
+    return currentSelectedId;
   }
 
-  // 找到当前选中组件在可见列表中的索引
-  const index = visibleComponentList.findIndex(
+  // 获取当前组件在列表中的索引
+  const currentIndex = componentList.findIndex(
     (c) => c.fe_id === currentSelectedId
   );
+  if (currentIndex === -1) return "";
 
-  // 如果当前选中的组件不在可见列表中，选中第一个可见组件
-  if (index < 0) {
-    return visibleComponentList[0].fe_id;
+  // 尝试获取下一个可见组件
+  for (let i = currentIndex + 1; i < componentList.length; i++) {
+    if (!componentList[i].isHidden) {
+      return componentList[i].fe_id;
+    }
   }
 
-  // 如果隐藏的是最后一个可见组件，选中前一个
-  if (index === visibleComponentList.length - 1) {
-    return visibleComponentList[index - 1].fe_id;
+  // 如果后面没有可见组件，尝试获取前一个可见组件
+  for (let i = currentIndex - 1; i >= 0; i--) {
+    if (!componentList[i].isHidden) {
+      return componentList[i].fe_id;
+    }
   }
 
-  // 如果隐藏的不是最后一个可见组件，选中下一个
-  return visibleComponentList[index + 1].fe_id;
+  // 如果前后都没有可见组件，返回空字符串
+  return "";
 }
