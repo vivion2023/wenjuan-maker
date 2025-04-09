@@ -49,5 +49,5 @@ const handleLock = (fe_id: string, isLocked: boolean) => {
 </script>
 
 <style lang="scss" scoped>
-@import "./Layers.module.scss";
+@use "./Layers.module.scss";
 </style>

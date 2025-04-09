@@ -16,7 +16,7 @@
           页面设置
         </span>
       </template>
-      <div></div>
+      <PageSetting />
     </Tabs.TabPane>
   </Tabs>
 </template>
@@ -25,6 +25,7 @@
 import { Tabs } from "ant-design-vue";
 import { FileTextOutlined, SettingOutlined } from "@ant-design/icons-vue";
 import ComponentProps from "./ComponentProps.vue";
+import PageSetting from "./PageSetting.vue";
 </script>
 
 <style scoped lang="scss"></style>
