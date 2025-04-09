@@ -1,21 +1,20 @@
 <template>
   <div class="edit-header">
     <div class="header-left">
-      <ElLink type="primary" class="back-link"> &lt; 返回</ElLink>
+      <el-link type="primary" class="back-link"> &lt; 返回</el-link>
       <div class="title-container">
         <div v-if="isEditTitle" class="title-input">
-          <ElInput
-            v-model="title"
+          <Input
+            v-model:value="pageInfo.title"
             size="large"
-            placeholder="从叫资院取种"
             @blur="isEditTitle = false"
           />
         </div>
         <div v-else class="title-display">
-          <span class="title-text">{{ title || "从叫资院取种" }}</span>
-          <ElIcon :size="16" class="edit-icon" @click="isEditTitle = true">
+          <span class="title-text">{{ pageInfo.title }}</span>
+          <el-icon :size="16" class="edit-icon" @click="isEditTitle = true">
             <Edit />
-          </ElIcon>
+          </el-icon>
         </div>
       </div>
     </div>
@@ -128,8 +127,8 @@
       </div>
     </div>
     <div class="header-right">
-      <ElButton class="action-button">保存</ElButton>
-      <ElButton type="primary" class="action-button">发布</ElButton>
+      <el-button class="action-button">保存</el-button>
+      <el-button type="primary" class="action-button">发布</el-button>
     </div>
   </div>
 </template>
@@ -138,10 +137,11 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
+import { useGetPageInfo } from "@/hooks/useGetPageInfo";
+import { Input } from "ant-design-vue";
 const store = useStore();
-
+const pageInfo = useGetPageInfo();
 const isEditTitle = ref(false);
-const title = ref("");
 const { selectedId, selectedComponent, copiedComponent } =
   useGetComponentInfo();
 const isLocked = computed(() => {
