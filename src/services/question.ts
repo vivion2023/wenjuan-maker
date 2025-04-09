@@ -16,6 +16,15 @@ export async function getQuestionService(id: string): Promise<ResDataType> {
   return data;
 }
 
+// 更新单个问卷
+export async function updateQuestionService(
+  id: string,
+  opt: { [key: string]: any }
+): Promise<ResDataType> {
+  const res = (await axios.patch(`/api/question/${id}`, opt)) as ResDataType;
+  return res;
+}
+
 // 创建问卷
 export async function createQuestionService(): Promise<ResDataType> {
   const url = `/api/question`;

@@ -127,23 +127,34 @@
       </div>
     </div>
     <div class="header-right">
-      <el-button class="action-button">保存</el-button>
+      <el-button :disabled="loading" class="action-button" @click="handleSave">
+        <el-icon v-if="loading" :size="16" class="loading-icon"
+          ><Loading
+        /></el-icon>
+        保存
+      </el-button>
       <el-button type="primary" class="action-button">发布</el-button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
 import { Input } from "ant-design-vue";
+import { useRoute } from "vue-router";
+import { useRequest } from "@/hooks/useRequest";
+import { updateQuestionService } from "@/services/question";
+
 const store = useStore();
+const route = useRoute();
 const pageInfo = useGetPageInfo();
 const isEditTitle = ref(false);
 const { selectedId, selectedComponent, copiedComponent } =
   useGetComponentInfo();
+const { componentList } = useGetComponentInfo();
 const isLocked = computed(() => {
   const component = selectedComponent.value;
   return component ? component.isLocked || false : false;
@@ -182,6 +193,33 @@ const handleCopy = () => {
 const handlePaste = () => {
   if (!copiedComponent.value) return;
   store.dispatch("componentsStore/pasteComponent");
+};
+
+// 保存
+const { loading, run: save } = useRequest(
+  async () => {
+    const id = route.params.id;
+    if (!id) return;
+    await updateQuestionService(id, {
+      ...pageInfo.value,
+      componentList: componentList.value,
+    });
+  },
+  {
+    manual: true,
+  },
+  {
+    onSuccess: () => {
+      ElMessage.success("保存成功");
+    },
+    onError: () => {
+      ElMessage.error("保存失败");
+    },
+  }
+);
+
+const handleSave = () => {
+  save();
 };
 </script>
 
