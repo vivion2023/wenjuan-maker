@@ -21,14 +21,7 @@ export function useLoadQuestionData(id: string) {
 
     if (!data.value) return;
 
-    const {
-      title,
-      desc,
-      js,
-      css,
-      isPublished,
-      componentList = [],
-    } = data.value;
+    const { title, desc, js, css, componentList = [] } = data.value;
 
     let selectedId = "";
     if (componentList.length > 0) {
@@ -40,6 +33,13 @@ export function useLoadQuestionData(id: string) {
       selectedId,
       componentList,
       copiedComponent: null,
+    });
+
+    store.dispatch("pageStore/resetPageInfo", {
+      title,
+      desc,
+      js,
+      css,
     });
   };
 
