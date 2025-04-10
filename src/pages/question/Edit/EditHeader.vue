@@ -139,7 +139,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
@@ -147,6 +147,7 @@ import { Input } from "ant-design-vue";
 import { useRoute } from "vue-router";
 import { useRequest } from "@/hooks/useRequest";
 import { updateQuestionService } from "@/services/question";
+import { useEventListener } from "@vueuse/core";
 
 const store = useStore();
 const route = useRoute();
@@ -218,8 +219,39 @@ const { loading, run: save } = useRequest(
   }
 );
 
-const handleSave = () => {
-  save();
+const handleSave = () => save();
+
+// const keys = useMagicKeys();
+// const saveKey = keys["ctrl+s"];
+
+// useEventListener(
+//   window,
+//   "keydown",
+//   (e) => {
+//     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+//       e.preventDefault();
+//       if (!loading.value) save();
+//     }
+//   },
+//   {
+//     capture: true,
+//     immediate: true,
+//   } // 关键：捕获阶段阻止默认行为
+// );
+
+onMounted(() => {
+  window.addEventListener("keydown", onKeyDown, true);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", onKeyDown, true);
+});
+
+const onKeyDown = (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+    e.preventDefault();
+    if (!loading.value) save();
+  }
 };
 </script>
 
