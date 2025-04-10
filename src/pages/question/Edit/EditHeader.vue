@@ -148,6 +148,7 @@ import { useRoute } from "vue-router";
 import { useRequest } from "@/hooks/useRequest";
 import { updateQuestionService } from "@/services/question";
 import { useEventListener } from "@vueuse/core";
+import { useDebounceFn } from "@vueuse/core";
 
 const store = useStore();
 const route = useRoute();
@@ -221,23 +222,19 @@ const { loading, run: save } = useRequest(
 
 const handleSave = () => save();
 
-// const keys = useMagicKeys();
-// const saveKey = keys["ctrl+s"];
+const saveDebounce = useDebounceFn(() => {
+  if (!loading.value) save();
+}, 1000);
 
-// useEventListener(
-//   window,
-//   "keydown",
-//   (e) => {
-//     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
-//       e.preventDefault();
-//       if (!loading.value) save();
-//     }
-//   },
-//   {
-//     capture: true,
-//     immediate: true,
-//   } // 关键：捕获阶段阻止默认行为
-// );
+watch(
+  [pageInfo.value, componentList.value],
+  () => {
+    saveDebounce();
+  },
+  {
+    deep: true,
+  }
+);
 
 onMounted(() => {
   window.addEventListener("keydown", onKeyDown, true);
