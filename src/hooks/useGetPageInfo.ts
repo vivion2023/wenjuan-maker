@@ -5,6 +5,5 @@ import { computed } from "vue";
 export function useGetPageInfo() {
   const store = useStore();
   const pageInfo = computed(() => store.state.pageStore);
-  console.log(pageInfo);
   return pageInfo;
 }

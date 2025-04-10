@@ -133,7 +133,6 @@ const onFinish = async (values) => {
 
     if (token) {
       setToken(token); // 存储 token
-      console.log("已保存 token:", token); // 调试用
 
       message.success("登录成功");
       router.push(MANAGE_INDEX_PATHNAME);

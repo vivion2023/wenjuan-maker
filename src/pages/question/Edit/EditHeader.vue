@@ -133,7 +133,9 @@
         /></el-icon>
         保存
       </el-button>
-      <el-button type="primary" class="action-button">发布</el-button>
+      <el-button type="primary" class="action-button" @click="handlePublish"
+        >发布</el-button
+      >
     </div>
   </div>
 </template>
@@ -144,7 +146,7 @@ import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
 import { Input } from "ant-design-vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useRequest } from "@/hooks/useRequest";
 import { updateQuestionService } from "@/services/question";
 import { useEventListener } from "@vueuse/core";
@@ -152,6 +154,7 @@ import { useDebounceFn } from "@vueuse/core";
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const pageInfo = useGetPageInfo();
 const isEditTitle = ref(false);
 const { selectedId, selectedComponent, copiedComponent } =
@@ -250,6 +253,32 @@ const onKeyDown = (e) => {
     if (!loading.value) save();
   }
 };
+
+// 发布
+const { loading: publishLoading, run: publish } = useRequest(
+  async () => {
+    const id = route.params.id;
+    if (!id) return;
+    const res = await updateQuestionService(id, {
+      ...pageInfo.value,
+      componentList: componentList.value,
+      isPublished: true,
+    });
+
+    if (res) {
+      console.log("发布成功", res);
+      ElMessage.success("发布成功");
+      router.push(`/question/stat/${id}`);
+    } else {
+      ElMessage.warning("发布状态更新失败");
+    }
+  },
+  {
+    manual: true,
+  }
+);
+
+const handlePublish = () => publish();
 </script>
 
 <style scoped lang="scss">

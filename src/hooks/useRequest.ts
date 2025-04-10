@@ -17,7 +17,6 @@ export function useRequest<T, P extends any[] = []>(service: Service<T, P>) {
       return result;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "请求失败";
-      console.error(error.value, e);
     } finally {
       loading.value = false;
     }

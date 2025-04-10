@@ -84,7 +84,6 @@ const formData = reactive<QuestionRadioPropsType>({
   onChange: props.onChange,
   disabled: props.disabled,
 });
-console.log(formData.defaultOption);
 
 // 监听props变化，更新表单数据
 watch(
