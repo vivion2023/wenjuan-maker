@@ -11,7 +11,6 @@
           ghostClass: 'ghost',
           dragClass: 'sortable-drag',
           onUpdate,
-          onStart,
         },
       ]"
     >
@@ -94,19 +93,11 @@ onUnmounted(() => {
   unbindKeyPress();
 });
 
-function onStart() {
-  console.log("start");
-}
-
 function onUpdate(evt: any) {
   store.dispatch("componentsStore/moveComponent", {
     oldIndex: evt.oldIndex,
     newIndex: evt.newIndex,
   });
-}
-
-function onEnd() {
-  console.log("end");
 }
 </script>
 

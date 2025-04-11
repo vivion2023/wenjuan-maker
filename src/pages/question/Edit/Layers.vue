@@ -1,36 +1,47 @@
 <template>
   <div class="layers">
     <div
-      class="layers-item"
-      v-for="item in componentList"
-      :key="item.fe_id"
-      :class="{ isActive: activeId === item.fe_id }"
-      @click.stop="handleSelect(item.fe_id)"
+      v-draggable="[
+        componentList,
+        {
+          animation: 150,
+          ghostClass: 'ghost',
+          dragClass: 'sortable-drag',
+        },
+      ]"
     >
-      <span class="left">
-        <template v-if="editingId !== item.fe_id">
-          {{ item.title }}
-        </template>
-        <template v-else>
-          <el-input v-model="item.title" />
-        </template>
-      </span>
-      <span class="right">
-        <el-icon
-          class="icon"
-          :class="{ isClick: item.isHidden }"
-          @click.stop="handleHide(item.fe_id, item.isHidden)"
-        >
-          <Hide />
-        </el-icon>
-        <el-icon
-          class="icon"
-          :class="{ isClick: item.isLocked }"
-          @click.stop="handleLock(item.fe_id, item.isLocked)"
-        >
-          <Lock />
-        </el-icon>
-      </span>
+      <div
+        class="layers-item"
+        v-for="item in componentList"
+        :key="item.fe_id"
+        :class="{ isActive: activeId === item.fe_id }"
+        @click.stop="handleSelect(item.fe_id)"
+      >
+        <span class="left">
+          <template v-if="editingId !== item.fe_id">
+            {{ item.title }}
+          </template>
+          <template v-else>
+            <el-input v-model="item.title" />
+          </template>
+        </span>
+        <span class="right">
+          <el-icon
+            class="icon"
+            :class="{ isClick: item.isHidden }"
+            @click.stop="handleHide(item.fe_id, item.isHidden)"
+          >
+            <Hide />
+          </el-icon>
+          <el-icon
+            class="icon"
+            :class="{ isClick: item.isLocked }"
+            @click.stop="handleLock(item.fe_id, item.isLocked)"
+          >
+            <Lock />
+          </el-icon>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +50,7 @@
 import { useStore } from "vuex";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
 import { ref, onMounted, onUnmounted } from "vue";
+import { vDraggable } from "vue-draggable-plus";
 const store = useStore();
 const { componentList } = useGetComponentInfo();
 
