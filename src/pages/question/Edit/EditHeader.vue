@@ -85,7 +85,7 @@
           <el-icon><DocumentCopy /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div class="header-mid-item" @click="handleMoveUp">
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -95,7 +95,7 @@
           <el-icon><ArrowUp /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div class="header-mid-item" @click="handleMoveDown">
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -198,6 +198,32 @@ const handleCopy = () => {
 const handlePaste = () => {
   if (!copiedComponent.value) return;
   store.dispatch("componentsStore/pasteComponent");
+};
+
+const handleMoveUp = () => {
+  console.log("up");
+  if (isLocked.value) return;
+  const oldIndex = componentList.value.findIndex(
+    (c) => c.fe_id === selectedId.value
+  );
+  if (oldIndex === 0) return;
+  store.dispatch("componentsStore/moveComponent", {
+    oldIndex: oldIndex,
+    newIndex: oldIndex - 1,
+  });
+};
+
+const handleMoveDown = () => {
+  console.log("down");
+  if (isLocked.value) return;
+  const oldIndex = componentList.value.findIndex(
+    (c) => c.fe_id === selectedId.value
+  );
+  if (oldIndex === componentList.value.length - 1) return;
+  store.dispatch("componentsStore/moveComponent", {
+    oldIndex: oldIndex,
+    newIndex: oldIndex + 1,
+  });
 };
 
 // 保存
