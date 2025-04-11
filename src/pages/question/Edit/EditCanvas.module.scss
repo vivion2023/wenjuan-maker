@@ -9,6 +9,9 @@
   border: 1px solid #fff;
   padding: 12px;
   border-radius: 3px;
+  background-color: #fff;
+  cursor: move;
+  user-select: none;
 
   &:hover {
     border-color: #d9d9d9;
@@ -24,6 +27,15 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+.ghost {
+  opacity: 0 !important;
+}
+
+:global(.sortable-drag) {
+  opacity: 1 !important;
+  background-color: #f0f0f0 !important;
 }
 
 .component-container {

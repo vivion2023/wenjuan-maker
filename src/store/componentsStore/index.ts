@@ -137,6 +137,11 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       if (index >= state.componentList.length - 1) return;
       state.selectedId = state.componentList[index + 1].fe_id;
     },
+    MOVE_COMPONENT(state, payload: { oldIndex: number; newIndex: number }) {
+      const { oldIndex, newIndex } = payload;
+      const [movedItem] = state.componentList.splice(oldIndex, 1); // 先删除索引2的元素
+      state.componentList.splice(newIndex, 0, movedItem); // 再插入到索引0
+    },
   },
   actions: {
     resetComponents({ commit }, payload: ComponentsStateType) {
@@ -174,6 +179,9 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     selectNextComponent({ commit }) {
       commit("SELECT_NEXT_COMPONENT");
+    },
+    moveComponent({ commit }, payload: { oldIndex: number; newIndex: number }) {
+      commit("MOVE_COMPONENT", payload);
     },
   },
 };
