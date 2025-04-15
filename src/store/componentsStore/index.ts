@@ -2,7 +2,7 @@ import { Module } from "vuex";
 import { ComponentPropsType } from "@/components/QuestionComponents";
 import { StateType } from "../index";
 import { insertNewComponent, getNextSelectedId } from "./utils";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { nanoid } from "nanoid";
 
 /**
@@ -36,6 +36,13 @@ export const INIT_STATE: ComponentsStateType = {
   history: [],
   historyIndex: -1,
 };
+
+// 在 componentsModule 对象外部创建防抖函数
+const debouncedSaveHistory = debounce((commit, state) => {
+  if (state.componentList.length > 0) {
+    commit("SAVE_HISTORY");
+  }
+}, 500); // 500ms 的防抖时间，可根据需求调整
 
 const componentsModule: Module<ComponentsStateType, StateType> = {
   namespaced: true,
@@ -226,11 +233,12 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
       commit("REDO");
     },
     updateComponentProps(
-      { commit, dispatch },
+      { commit, state },
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
       commit("UPDATE_COMPONENT_PROPS", payload);
-      dispatch("saveHistory");
+      // 使用防抖版本保存历史
+      debouncedSaveHistory(commit, state);
     },
     addComponent({ commit, dispatch }, payload: ComponentInfoType) {
       commit("ADD_COMPONENT", payload);
