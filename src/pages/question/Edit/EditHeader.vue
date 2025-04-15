@@ -105,7 +105,11 @@
           <el-icon><ArrowDown /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div
+        class="header-mid-item"
+        @click="handleUndo"
+        :class="{ disabled: !canUndo }"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -115,7 +119,11 @@
           <el-icon><RefreshLeft /></el-icon>
         </el-tooltip>
       </div>
-      <div class="header-mid-item">
+      <div
+        class="header-mid-item"
+        @click="handleRedo"
+        :class="{ disabled: !canRedo }"
+      >
         <el-tooltip
           class="box-item"
           effect="dark"
@@ -150,8 +158,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useRequest } from "@/hooks/useRequest";
 import { updateQuestionService } from "@/services/question";
 import { useEventListener } from "@vueuse/core";
-import { useDebounceFn } from "@vueuse/core";
-
+import { useDebounceFn, useRefHistory } from "@vueuse/core";
+import cloneDeep from "lodash/cloneDeep";
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
@@ -160,6 +168,10 @@ const isEditTitle = ref(false);
 const { selectedId, selectedComponent, copiedComponent } =
   useGetComponentInfo();
 const { componentList } = useGetComponentInfo();
+
+const canUndo = computed(() => store.getters["componentsStore/canUndo"]);
+const canRedo = computed(() => store.getters["componentsStore/canRedo"]);
+
 const isLocked = computed(() => {
   const component = selectedComponent.value;
   return component ? component.isLocked || false : false;
@@ -170,11 +182,17 @@ const isHidden = computed(() => {
   return component ? component.isHidden || false : false;
 });
 
+/*
+  @description: 各个按钮的点击事件
+*/
+
+// 删除
 const handleDelete = () => {
   if (isLocked.value) return;
   store.dispatch("componentsStore/deleteComponent");
 };
 
+// 隐藏
 const handleHide = () => {
   if (isLocked.value) return;
   store.dispatch("componentsStore/hideComponent", {
@@ -183,6 +201,7 @@ const handleHide = () => {
   });
 };
 
+// 锁定
 const handleLock = () => {
   store.dispatch("componentsStore/lockComponent", {
     fe_id: selectedId.value,
@@ -190,18 +209,20 @@ const handleLock = () => {
   });
 };
 
+// 复制
 const handleCopy = () => {
   if (isLocked.value) return;
   store.dispatch("componentsStore/copyComponent");
 };
 
+// 粘贴
 const handlePaste = () => {
   if (!copiedComponent.value) return;
   store.dispatch("componentsStore/pasteComponent");
 };
 
+// 上移
 const handleMoveUp = () => {
-  console.log("up");
   if (isLocked.value) return;
   const oldIndex = componentList.value.findIndex(
     (c) => c.fe_id === selectedId.value
@@ -213,8 +234,8 @@ const handleMoveUp = () => {
   });
 };
 
+// 下移
 const handleMoveDown = () => {
-  console.log("down");
   if (isLocked.value) return;
   const oldIndex = componentList.value.findIndex(
     (c) => c.fe_id === selectedId.value
@@ -226,7 +247,22 @@ const handleMoveDown = () => {
   });
 };
 
-// 保存
+// 撤销
+const handleUndo = () => {
+  if (!canUndo.value) return;
+  store.dispatch("componentsStore/undo");
+};
+
+// 重做
+const handleRedo = () => {
+  if (!canRedo.value) return;
+  store.dispatch("componentsStore/redo");
+};
+
+/*
+  @description: 保存
+*/
+
 const { loading, run: save } = useRequest(
   async () => {
     const id = route.params.id;
@@ -265,8 +301,13 @@ watch(
   }
 );
 
+/*
+  @description: 快捷键
+*/
+
 onMounted(() => {
   window.addEventListener("keydown", onKeyDown, true);
+  store.dispatch("componentsStore/initHistory");
 });
 
 onBeforeUnmount(() => {
@@ -278,9 +319,22 @@ const onKeyDown = (e) => {
     e.preventDefault();
     if (!loading.value) save();
   }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+    e.preventDefault();
+    if (!canUndo.value) return;
+    store.dispatch("componentsStore/undo");
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+    e.preventDefault();
+    if (!canRedo.value) return;
+    store.dispatch("componentsStore/redo");
+  }
 };
 
-// 发布
+/*
+  @description: 发布
+*/
+
 const { loading: publishLoading, run: publish } = useRequest(
   async () => {
     const id = route.params.id;
@@ -292,7 +346,6 @@ const { loading: publishLoading, run: publish } = useRequest(
     });
 
     if (res) {
-      console.log("发布成功", res);
       ElMessage.success("发布成功");
       router.push(`/question/stat/${id}`);
     } else {

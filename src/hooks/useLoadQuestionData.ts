@@ -41,6 +41,9 @@ export function useLoadQuestionData(id: string) {
       js,
       css,
     });
+
+    store.dispatch("componentsStore/initHistory");
+    store.dispatch("componentsStore/saveHistory");
   };
 
   onMounted(() => {

@@ -24,6 +24,8 @@ export type ComponentsStateType = {
   selectedId: string; //记录选中的组件id
   componentList: Array<ComponentInfoType>;
   copiedComponent: ComponentInfoType | null;
+  history: Array<Array<ComponentInfoType>>; //历史记录
+  historyIndex: number; //当前历史记录的索引
 };
 
 //默认状态
@@ -31,6 +33,8 @@ export const INIT_STATE: ComponentsStateType = {
   selectedId: "",
   componentList: [],
   copiedComponent: null,
+  history: [],
+  historyIndex: -1,
 };
 
 const componentsModule: Module<ComponentsStateType, StateType> = {
@@ -38,12 +42,18 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
   state: INIT_STATE,
   getters: {
     currentSelectedComponentId: (state) => state.selectedId,
+    currentHistory: (state) => state.history[state.historyIndex],
+    canUndo: (state) => state.history && state.historyIndex > 0,
+    canRedo: (state) =>
+      state.history && state.historyIndex < state.history.length - 1,
   },
   mutations: {
     RESET_COMPONENTS(state, payload: ComponentsStateType) {
       state.selectedId = payload.selectedId;
       state.componentList = payload.componentList;
       state.copiedComponent = payload.copiedComponent;
+      state.history = payload.history;
+      state.historyIndex = payload.historyIndex;
     },
     ADD_COMPONENT(state, payload: ComponentInfoType) {
       insertNewComponent(state, payload);
@@ -51,6 +61,52 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     CHANGE_SELECTID(state, payload: { selectedId: string }) {
       state.selectedId = payload.selectedId;
     },
+
+    // 历史记录
+    SAVE_HISTORY(state) {
+      if (!state.history) {
+        state.history = [];
+        state.historyIndex = -1;
+      }
+
+      // 如果当前历史位置不是最新，则清除当前位置之后的历史
+      if (
+        state.historyIndex >= 0 &&
+        state.historyIndex < state.history.length - 1
+      ) {
+        state.history = state.history.slice(0, state.historyIndex + 1);
+      }
+
+      // 保存当前状态到历史
+      state.history.push(cloneDeep(state.componentList));
+
+      // 维护历史长度，避免过长
+      if (state.history.length > 20) {
+        state.history.shift();
+        // 如果移除了最早的历史，索引需要调整
+        state.historyIndex = Math.max(0, state.historyIndex - 1);
+      } else {
+        // 索引指向新增的历史
+        state.historyIndex = state.history.length - 1;
+      }
+    },
+
+    // 撤销
+    UNDO(state) {
+      if (state.history && state.historyIndex > 0) {
+        state.historyIndex--;
+        state.componentList = cloneDeep(state.history[state.historyIndex]);
+      }
+    },
+
+    // 重做
+    REDO(state) {
+      if (state.history && state.historyIndex < state.history.length - 1) {
+        state.historyIndex++;
+        state.componentList = cloneDeep(state.history[state.historyIndex]);
+      }
+    },
+
     UPDATE_COMPONENT_PROPS(
       state,
       payload: { fe_id: string; newProps: ComponentPropsType }
@@ -150,29 +206,60 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     changeSelectedID({ commit }, payload: { selectedId: string }) {
       commit("CHANGE_SELECTID", payload);
     },
+    initHistory({ commit, state }) {
+      // 初始化数组
+      if (!state.history) {
+        state.history = [];
+        state.historyIndex = -1;
+      }
+    },
+    saveHistory({ commit, state }) {
+      if (state.componentList.length > 0) {
+        commit("SAVE_HISTORY");
+      }
+    },
+    undo({ commit }) {
+      commit("UNDO");
+    },
+
+    redo({ commit }) {
+      commit("REDO");
+    },
     updateComponentProps(
-      { commit },
+      { commit, dispatch },
       payload: { fe_id: string; newProps: ComponentPropsType }
     ) {
       commit("UPDATE_COMPONENT_PROPS", payload);
+      dispatch("saveHistory");
     },
-    addComponent({ commit }, payload: ComponentInfoType) {
+    addComponent({ commit, dispatch }, payload: ComponentInfoType) {
       commit("ADD_COMPONENT", payload);
+      dispatch("saveHistory");
     },
-    deleteComponent({ commit }) {
+    deleteComponent({ commit, dispatch }) {
       commit("DELETE_COMPONENT");
+      dispatch("saveHistory");
     },
-    hideComponent({ commit }, payload: { fe_id: string; isHidden: boolean }) {
+    hideComponent(
+      { commit, dispatch },
+      payload: { fe_id: string; isHidden: boolean }
+    ) {
       commit("HIDE_COMPONENT", payload);
+      dispatch("saveHistory");
     },
-    lockComponent({ commit }, payload: { fe_id: string; isLocked: boolean }) {
+    lockComponent(
+      { commit, dispatch },
+      payload: { fe_id: string; isLocked: boolean }
+    ) {
       commit("LOCK_COMPONENT", payload);
+      dispatch("saveHistory");
     },
     copyComponent({ commit }) {
       commit("COPY_COMPONENT");
     },
-    pasteComponent({ commit }) {
+    pasteComponent({ commit, dispatch }) {
       commit("PASTE_COMPONENT");
+      dispatch("saveHistory");
     },
     selectPreviousComponent({ commit }) {
       commit("SELECT_PREVIOUS_COMPONENT");
@@ -180,8 +267,12 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     selectNextComponent({ commit }) {
       commit("SELECT_NEXT_COMPONENT");
     },
-    moveComponent({ commit }, payload: { oldIndex: number; newIndex: number }) {
+    moveComponent(
+      { commit, dispatch },
+      payload: { oldIndex: number; newIndex: number }
+    ) {
       commit("MOVE_COMPONENT", payload);
+      dispatch("saveHistory");
     },
   },
 };
