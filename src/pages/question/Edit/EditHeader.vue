@@ -21,120 +21,147 @@
       </div>
     </div>
     <div class="header-mid">
-      <div
-        class="header-mid-item"
-        :class="{ disabled: isLocked }"
-        @click="handleDelete"
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="删除"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="删除"
-          placement="bottom"
+        <div
+          class="header-mid-item"
+          :class="{ disabled: isLocked }"
+          @click="handleDelete"
         >
           <el-icon><Delete /></el-icon>
-        </el-tooltip>
-      </div>
-      <div
-        class="header-mid-item"
-        :class="{ disabled: isLocked }"
-        @click="handleHide"
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="隐藏"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="隐藏"
-          placement="bottom"
+        <div
+          class="header-mid-item"
+          :class="{ disabled: isLocked }"
+          @click="handleHide"
         >
           <el-icon><Hide /></el-icon>
-        </el-tooltip>
-      </div>
-      <div
-        class="header-mid-item"
-        :class="{ isLocked: isLocked }"
-        @click="handleLock"
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="锁定"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="锁定"
-          placement="bottom"
+        <div
+          class="header-mid-item"
+          :class="{ isLocked: isLocked }"
+          @click="handleLock"
         >
           <el-icon><Lock /></el-icon>
-        </el-tooltip>
-      </div>
-      <div class="header-mid-item" @click="handleCopy">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="复制"
-          placement="bottom"
-        >
-          <el-icon><CopyDocument /></el-icon>
-        </el-tooltip>
-      </div>
-      <div
-        class="header-mid-item"
-        @click="handlePaste"
-        :class="{ disabled: !copiedComponent }"
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="复制"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="粘贴"
-          placement="bottom"
+        <div class="header-mid-item" @click="handleCopy">
+          <el-icon><CopyDocument /></el-icon>
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="粘贴"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
+      >
+        <div
+          class="header-mid-item"
+          @click="handlePaste"
+          :class="{ disabled: !copiedComponent }"
         >
           <el-icon><DocumentCopy /></el-icon>
-        </el-tooltip>
-      </div>
-      <div class="header-mid-item" @click="handleMoveUp">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="上移"
-          placement="bottom"
-        >
-          <el-icon><ArrowUp /></el-icon>
-        </el-tooltip>
-      </div>
-      <div class="header-mid-item" @click="handleMoveDown">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="下移"
-          placement="bottom"
-        >
-          <el-icon><ArrowDown /></el-icon>
-        </el-tooltip>
-      </div>
-      <div
-        class="header-mid-item"
-        @click="handleUndo"
-        :class="{ disabled: !canUndo }"
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="上移"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="撤销"
-          placement="bottom"
+        <div class="header-mid-item" @click="handleMoveUp">
+          <el-icon><ArrowUp /></el-icon>
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="下移"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
+      >
+        <div class="header-mid-item" @click="handleMoveDown">
+          <el-icon><ArrowDown /></el-icon>
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="撤销"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
+      >
+        <div
+          class="header-mid-item"
+          @click="handleUndo"
+          :class="{ disabled: !canUndo }"
         >
           <el-icon><RefreshLeft /></el-icon>
-        </el-tooltip>
-      </div>
-      <div
-        class="header-mid-item"
-        @click="handleRedo"
-        :class="{ disabled: !canRedo }"
+        </div>
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="重做"
+        placement="bottom"
+        :enterable="false"
+        :show-after="100"
+        :hide-after="100"
       >
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="重做"
-          placement="bottom"
+        <div
+          class="header-mid-item"
+          @click="handleRedo"
+          :class="{ disabled: !canRedo }"
         >
           <el-icon><RefreshRight /></el-icon>
-        </el-tooltip>
-      </div>
+        </div>
+      </el-tooltip>
     </div>
     <div class="header-right">
       <el-button :disabled="loading" class="action-button" @click="handleSave">
