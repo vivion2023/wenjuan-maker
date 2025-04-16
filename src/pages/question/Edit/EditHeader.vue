@@ -1,7 +1,9 @@
 <template>
   <div class="edit-header">
     <div class="header-left">
-      <el-link type="primary" class="back-link"> &lt; 返回</el-link>
+      <el-link type="primary" class="back-link" @click="() => router.back()"
+        >&lt; 返回</el-link
+      >
       <div class="title-container">
         <div v-if="isEditTitle" class="title-input">
           <Input
