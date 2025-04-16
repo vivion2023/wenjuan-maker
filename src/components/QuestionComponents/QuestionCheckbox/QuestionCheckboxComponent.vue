@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps, computed } from "vue";
+import { defineProps, computed } from "vue";
 import { Typography, Checkbox, CheckboxGroup } from "ant-design-vue";
 import {
   QuestionCheckboxPropsType,
@@ -26,17 +26,21 @@ import {
 } from "./interface";
 const { Paragraph } = Typography;
 
-const props = withDefaults(
-  defineProps<QuestionCheckboxPropsType>(),
-  QuestionCheckboxDefaultProps
+const props = defineProps<QuestionCheckboxPropsType>();
+
+// 使用默认值
+const titleValue = computed(
+  () => props.title || QuestionCheckboxDefaultProps.title
+);
+const listValue = computed(
+  () => props.list || QuestionCheckboxDefaultProps.list
+);
+const isVerticalValue = computed(
+  () => props.isVertical ?? QuestionCheckboxDefaultProps.isVertical
 );
 
-const titleValue = computed(() => props.title);
-const listValue = computed(() => props.list || []);
-const isVerticalValue = computed(() => props.isVertical);
-
-// 优先使用value作为选中值，如果没有则使用defaultOption
-const checkboxValue = computed(() => props.value || props.defaultOption);
+// 修正这一行，去掉不存在的 defaultOption
+const checkboxValue = computed(() => props.value || []);
 </script>
 
 <style scoped>
