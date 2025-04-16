@@ -16,10 +16,18 @@
             :show-after="100"
             :hide-after="100"
           >
-            <Button class="copy-btn" @click="handleCopy">
+            <Button class="btn" @click="handleCopy">
               <el-icon><CopyDocument /></el-icon>
             </Button>
           </el-tooltip>
+          <Popover>
+            <template #content>
+              <vue-qr ref="qrCode" :text="url" :size="190" :margin="10" />
+            </template>
+            <Button class="btn">
+              <el-icon><QrcodeOutlined /></el-icon>
+            </Button>
+          </Popover>
         </Space>
       </div>
       <div class="right">
@@ -37,11 +45,14 @@ import {
   Typography,
   Tooltip,
   message,
+  Popover,
 } from "ant-design-vue";
+import { QrcodeOutlined } from "@ant-design/icons-vue";
 import { ref, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
 import { useClipboard } from "@vueuse/core";
+import vueQr from "vue-qr/src/packages/vue-qr.vue";
 const { Title } = Typography;
 const router = useRouter();
 const { title } = useGetPageInfo();
