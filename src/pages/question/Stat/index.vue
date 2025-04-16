@@ -1,10 +1,18 @@
 <template>
-  <div v-if="isPublished">
-    <p v-if="loading" style="text-align: center; margin-top: 24px">
-      <Spin />
-    </p>
-    <p v-else-if="error">{{ error }}</p>
-    <p v-else>Stat Page</p>
+  <div v-if="loading" style="text-align: center; margin-top: 24px">
+    <Spin />
+  </div>
+  <div v-else-if="isPublished">
+    <div class="container">
+      <div class="header">Header</div>
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="left">left</div>
+          <div class="middle">middle</div>
+          <div class="right">right</div>
+        </div>
+      </div>
+    </div>
   </div>
   <div v-else>
     <Result status="warning" title="该页面未发布">
@@ -27,7 +35,6 @@ const router = useRouter();
 const store = useStore();
 const { loading } = useLoadQuestionData(route.params.id);
 const { isPublished, title } = useGetPageInfo();
-console.log(isPublished, title);
 
 watch(title, (newVal) => {
   if (newVal) {
@@ -36,4 +43,6 @@ watch(title, (newVal) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@use "./index.module.scss" as *;
+</style>
