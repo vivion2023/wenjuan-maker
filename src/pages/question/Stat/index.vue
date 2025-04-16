@@ -4,7 +4,7 @@
   </div>
   <div v-else-if="isPublished">
     <div class="container">
-      <div class="header">Header</div>
+      <StatHeader />
       <div class="content-wrapper">
         <div class="content">
           <div class="left">left</div>
@@ -27,6 +27,7 @@
 import { useLoadQuestionData } from "@/hooks/useLoadQuestionData";
 import { useRoute, useRouter } from "vue-router";
 import { Spin, Button, Result } from "ant-design-vue";
+import StatHeader from "./StatHeader.vue";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
 import { useStore } from "vuex";
 import { watch } from "vue";

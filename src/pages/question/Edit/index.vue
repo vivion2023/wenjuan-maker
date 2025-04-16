@@ -26,10 +26,9 @@ import LeftPanel from "./LeftPanel.vue";
 import RightPanel from "./RightPanel.vue";
 import EditHeader from "./EditHeader.vue";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
-import { watch } from "vue";
+import { watch, computed } from "vue";
 const store = useStore();
 const { title } = useGetPageInfo();
-
 const clearSelected = () => {
   store.commit("componentsStore/CHANGE_SELECTID", { selectedId: "" });
 };

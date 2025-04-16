@@ -3,7 +3,6 @@
     size="large"
     allow-clear
     placeholder="请输入关键字"
-    :value="localKeyword"
     v-model:value="localKeyword"
     style="width: 260px"
     @search="onSearch"

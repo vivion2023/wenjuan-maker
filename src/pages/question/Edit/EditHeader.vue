@@ -165,7 +165,7 @@ import cloneDeep from "lodash/cloneDeep";
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
-const pageInfo = useGetPageInfo();
+const { pageInfo } = useGetPageInfo();
 const isEditTitle = ref(false);
 const { selectedId, selectedComponent, copiedComponent } =
   useGetComponentInfo();
@@ -294,7 +294,7 @@ const saveDebounce = useDebounceFn(() => {
 }, 1000);
 
 watch(
-  [pageInfo.value, componentList.value],
+  [() => pageInfo.title, () => componentList.value],
   () => {
     saveDebounce();
   },

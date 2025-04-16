@@ -6,7 +6,10 @@ export function useGetPageInfo() {
   const store = useStore();
   return {
     pageInfo: computed(() => store.state.pageStore),
-    isPublished: computed(() => store.state.pageStore.isPublished),
     title: computed(() => store.state.pageStore.title),
+    isPublished: computed(() => store.state.pageStore.isPublished),
+    desc: computed(() => store.state.pageStore.desc),
+    css: computed(() => store.state.pageStore.css),
+    js: computed(() => store.state.pageStore.js),
   };
 }
