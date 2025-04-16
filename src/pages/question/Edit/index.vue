@@ -25,11 +25,20 @@ import { useStore } from "vuex";
 import LeftPanel from "./LeftPanel.vue";
 import RightPanel from "./RightPanel.vue";
 import EditHeader from "./EditHeader.vue";
+import { useGetPageInfo } from "@/hooks/useGetPageInfo";
+import { watch } from "vue";
 const store = useStore();
+const { title } = useGetPageInfo();
 
 const clearSelected = () => {
   store.commit("componentsStore/CHANGE_SELECTID", { selectedId: "" });
 };
+
+watch(title, (newVal) => {
+  if (newVal) {
+    document.title = `问卷编辑 - ${newVal}`;
+  }
+});
 </script>
 
 <style scoped lang="scss">

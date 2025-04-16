@@ -21,7 +21,14 @@ export function useLoadQuestionData(id: string) {
 
     if (!data.value) return;
 
-    const { title, desc, js, css, componentList = [] } = data.value;
+    const {
+      title = "",
+      desc = "",
+      js = "",
+      css = "",
+      componentList = [],
+      isPublished = false,
+    } = data.value;
 
     let selectedId = "";
     if (componentList.length > 0) {
@@ -40,6 +47,7 @@ export function useLoadQuestionData(id: string) {
       desc,
       js,
       css,
+      isPublished,
     });
 
     store.dispatch("componentsStore/initHistory");

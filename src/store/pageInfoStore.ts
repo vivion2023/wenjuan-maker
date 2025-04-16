@@ -32,6 +32,7 @@ const pageModule: Module<PageInfoType, StateType> = {
   actions: {
     resetPageInfo({ commit }, payload: Partial<PageInfoType>) {
       commit("RESET_PAGE_INFO", payload);
+      console.log(payload);
     },
   },
 };
