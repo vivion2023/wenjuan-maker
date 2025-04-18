@@ -7,8 +7,15 @@
       <StatHeader />
       <div class="content-wrapper">
         <div class="content">
-          <div class="left">left</div>
-          <div class="middle">middle</div>
+          <div class="left">
+            <StatComponentList
+              v-model:selectedComponentId="selectedComponentId"
+              v-model:selectedComponentType="selectedComponentType"
+            />
+          </div>
+          <div class="middle">
+            <PageStat v-model:selectedComponentId="selectedComponentId" />
+          </div>
           <div class="right">right</div>
         </div>
       </div>
@@ -30,12 +37,18 @@ import { Spin, Button, Result } from "ant-design-vue";
 import StatHeader from "./StatHeader.vue";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
 import { useStore } from "vuex";
-import { watch } from "vue";
+import { watch, ref } from "vue";
+import StatComponentList from "./StatComponentList.vue";
+import PageStat from "./PageStat.vue";
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const { loading } = useLoadQuestionData(route.params.id);
 const { isPublished, title } = useGetPageInfo();
+
+// 状态提升 selectedId type
+const selectedComponentId = ref("");
+const selectedComponentType = ref("");
 
 watch(title, (newVal) => {
   if (newVal) {
