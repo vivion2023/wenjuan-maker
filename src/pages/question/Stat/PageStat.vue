@@ -8,7 +8,13 @@
     </div>
     <div v-else>
       <div class="list">
-        <Table :dataSource="list" :columns="columns" />
+        <Table :dataSource="list" :columns="columns" :pagination="false" />
+        <Pagination
+          :total="total"
+          :page-size="pageSize"
+          :current="page"
+          @change="handlePageChange"
+        />
       </div>
     </div>
   </div>
@@ -18,14 +24,15 @@
 import { getQuestionStatListService } from "@/services/stat";
 import { useRequest } from "@/hooks/useRequest";
 import { useRoute } from "vue-router";
-import { computed } from "vue";
-import { Typography, Table, Spin } from "ant-design-vue";
+import { computed, ref, watch } from "vue";
+import { Typography, Table, Spin, Pagination } from "ant-design-vue";
 import { useGetComponentInfo } from "@/hooks/useGetComponentInfo";
+import { STAT_PAGE_SIZE } from "@/constant";
 const { Title } = Typography;
 const route = useRoute();
-const questionId = route.params.id as string;
-const page = route.query.page as string;
-const pageSize = route.query.pageSize as string;
+const questionId = ref(route.params.id as string);
+const page = ref(1);
+const pageSize = ref(STAT_PAGE_SIZE);
 
 const props = defineProps<{
   selectedComponentId: string;
@@ -38,9 +45,9 @@ const emit = defineEmits<{
 
 // 获取组件统计数据
 const { data, loading, error, run } = useRequest(async () => {
-  const data = await getQuestionStatListService(questionId, {
-    page: page ? parseInt(page) : 1,
-    pageSize: pageSize ? parseInt(pageSize) : 10,
+  const data = await getQuestionStatListService(questionId.value, {
+    page: page.value,
+    pageSize: pageSize.value,
   });
   return data;
 });
@@ -81,10 +88,26 @@ const columns = computed(() => {
   });
 });
 
+// 合并所有watch
+watch(
+  [questionId, page, pageSize],
+  () => {
+    run();
+  },
+  { immediate: true } // 添加immediate使组件挂载时就执行一次
+);
+
 // 处理表头点击事件
 const handleHeaderClick = (feId: string, title: string) => {
   console.log("点击了组件:", feId, title);
   // 发射事件更新父组件的selectedComponentId
   emit("update:selectedComponentId", feId);
+};
+
+// 修正分页处理函数
+const handlePageChange = (newPage: number, newPageSize: number) => {
+  page.value = newPage;
+  pageSize.value = newPageSize;
+  // run() 不需要在这里调用，因为watch会自动触发
 };
 </script>
