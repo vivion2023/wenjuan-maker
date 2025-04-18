@@ -36,11 +36,13 @@ const pageSize = ref(STAT_PAGE_SIZE);
 
 const props = defineProps<{
   selectedComponentId: string;
+  selectedComponentType: string;
 }>();
 
 // 定义事件发射
 const emit = defineEmits<{
   (e: "update:selectedComponentId", id: string): void;
+  (e: "update:selectedComponentType", type: string): void;
 }>();
 
 // 获取组件统计数据
@@ -62,7 +64,7 @@ const { componentList } = useGetComponentInfo();
 
 const columns = computed(() => {
   return componentList.value.map((c: any) => {
-    const { title, fe_id, props: componentProps } = c;
+    const { title, fe_id, props: componentProps, type } = c;
 
     // 判断当前列是否为选中状态
     const isSelected = props.selectedComponentId === fe_id;
@@ -70,10 +72,11 @@ const columns = computed(() => {
     return {
       title: componentProps.title || title,
       dataIndex: fe_id,
+      type: type,
       customHeaderCell: () => {
         return {
           onClick: () => {
-            handleHeaderClick(fe_id, componentProps.title || title);
+            handleHeaderClick(fe_id, type);
           },
           style: {
             cursor: "pointer",
@@ -98,17 +101,16 @@ watch(
 );
 
 // 处理表头点击事件
-const handleHeaderClick = (feId: string, title: string) => {
-  console.log("点击了组件:", feId, title);
+const handleHeaderClick = (feId: string, type: string) => {
   // 发射事件更新父组件的selectedComponentId
   emit("update:selectedComponentId", feId);
+  emit("update:selectedComponentType", type);
 };
 
 // 修正分页处理函数
 const handlePageChange = (newPage: number, newPageSize: number) => {
   page.value = newPage;
   pageSize.value = newPageSize;
-  // run() 不需要在这里调用，因为watch会自动触发
 };
 </script>
 

@@ -14,10 +14,16 @@
             />
           </div>
           <div class="middle">
-            <PageStat v-model:selectedComponentId="selectedComponentId" />
+            <PageStat
+              v-model:selectedComponentId="selectedComponentId"
+              v-model:selectedComponentType="selectedComponentType"
+            />
           </div>
           <div class="right">
-            <ChartStat v-model:selectedComponentId="selectedComponentId" />
+            <ChartStat
+              v-model:selectedComponentId="selectedComponentId"
+              v-model:selectedComponentType="selectedComponentType"
+            />
           </div>
         </div>
       </div>

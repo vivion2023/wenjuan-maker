@@ -43,7 +43,6 @@ const visibleComponentList = computed(() =>
 const handleComponentClick = (item: any) => {
   emit("update:selectedComponentId", item.fe_id);
   emit("update:selectedComponentType", item.type);
-  console.log(item.fe_id, item.type);
 };
 
 // 这里只返回组件类型，不创建新实例

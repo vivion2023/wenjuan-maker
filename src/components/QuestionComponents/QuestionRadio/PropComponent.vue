@@ -70,17 +70,14 @@ import { useStore } from "vuex";
 import { nanoid } from "nanoid";
 const store = useStore();
 
-const props = withDefaults(
-  defineProps<QuestionRadioPropsType>(),
-  QuestionRadioDefaultProps
-);
+const props = defineProps<QuestionRadioPropsType>();
 
 const formData = reactive<QuestionRadioPropsType>({
-  title: props.title,
-  options: props.options,
-  isVertical: props.isVertical,
-  defaultOption: props.defaultOption,
-  value: props.value,
+  title: props.title ?? QuestionRadioDefaultProps.title,
+  options: props.options ?? QuestionRadioDefaultProps.options,
+  isVertical: props.isVertical ?? QuestionRadioDefaultProps.isVertical,
+  defaultOption: props.defaultOption ?? QuestionRadioDefaultProps.defaultOption,
+  value: props.value ?? QuestionRadioDefaultProps.value,
   onChange: props.onChange,
   disabled: props.disabled,
 });

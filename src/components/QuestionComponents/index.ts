@@ -10,6 +10,7 @@ import QuestionParagraphConf, {
 import QuestionInfoConf, { QuestionInfoPropsType } from "./QuestionInfo/index";
 import QuestionRadioConf, {
   QuestionRadioPropsType,
+  QuestionRadioStatPropsType,
 } from "./QuestionRadio/index";
 import QuestionCheckboxConf, {
   QuestionCheckboxPropsType,
@@ -38,6 +39,7 @@ export type ComponentConfType = {
   component: DefineComponent<ComponentPropsType>;
   PropComponent: DefineComponent<ComponentPropsType>;
   defaultProps: ComponentPropsType;
+  StatComponent?: DefineComponent<ComponentStatPropsType>;
 };
 
 /**
@@ -52,6 +54,9 @@ const componentConfList: ComponentConfType[] = [
   QuestionCheckboxConf as ComponentConfType,
   QuestionTextareaConf as ComponentConfType,
 ];
+
+// 组件的统计类型
+export type ComponentStatPropsType = QuestionRadioStatPropsType;
 
 // 组件分组
 export const componentConfGroup = [

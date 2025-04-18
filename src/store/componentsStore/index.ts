@@ -1,5 +1,8 @@
 import { Module } from "vuex";
-import { ComponentPropsType } from "@/components/QuestionComponents";
+import {
+  ComponentPropsType,
+  ComponentStatPropsType,
+} from "@/components/QuestionComponents";
 import { StateType } from "../index";
 import { insertNewComponent, getNextSelectedId } from "./utils";
 import { cloneDeep, debounce } from "lodash";
@@ -15,6 +18,7 @@ export type ComponentInfoType = {
   isHidden?: boolean;
   isLocked?: boolean;
   props: ComponentPropsType;
+  stat?: ComponentStatPropsType;
 };
 
 /**
