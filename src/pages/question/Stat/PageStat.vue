@@ -44,7 +44,7 @@ const emit = defineEmits<{
 }>();
 
 // 获取组件统计数据
-const { data, loading, error, run } = useRequest(async () => {
+const { data, loading, run } = useRequest(async () => {
   const data = await getQuestionStatListService(questionId.value, {
     page: page.value,
     pageSize: pageSize.value,
@@ -111,3 +111,10 @@ const handlePageChange = (newPage: number, newPageSize: number) => {
   // run() 不需要在这里调用，因为watch会自动触发
 };
 </script>
+
+<style scoped>
+.title {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+</style>

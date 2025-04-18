@@ -16,7 +16,9 @@
           <div class="middle">
             <PageStat v-model:selectedComponentId="selectedComponentId" />
           </div>
-          <div class="right">right</div>
+          <div class="right">
+            <ChartStat v-model:selectedComponentId="selectedComponentId" />
+          </div>
         </div>
       </div>
     </div>
@@ -36,13 +38,12 @@ import { useRoute, useRouter } from "vue-router";
 import { Spin, Button, Result } from "ant-design-vue";
 import StatHeader from "./StatHeader.vue";
 import { useGetPageInfo } from "@/hooks/useGetPageInfo";
-import { useStore } from "vuex";
 import { watch, ref } from "vue";
 import StatComponentList from "./StatComponentList.vue";
 import PageStat from "./PageStat.vue";
+import ChartStat from "./ChartStat.vue";
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const { loading } = useLoadQuestionData(route.params.id);
 const { isPublished, title } = useGetPageInfo();
 
