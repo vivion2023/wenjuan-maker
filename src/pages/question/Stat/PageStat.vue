@@ -63,32 +63,36 @@ const list = computed(() => data.value?.list || []);
 const { componentList } = useGetComponentInfo();
 
 const columns = computed(() => {
-  return componentList.value.map((c: any) => {
-    const { title, fe_id, props: componentProps, type } = c;
+  return componentList.value
+    .filter((c: any) => c !== undefined) // 过滤掉undefined的组件
+    .map((c: any) => {
+      if (!c) return null; // 额外检查
 
-    // 判断当前列是否为选中状态
-    const isSelected = props.selectedComponentId === fe_id;
+      const { fe_id = "", type = "", title = "" } = c || {};
+      const componentProps = c.props || {};
 
-    return {
-      title: componentProps.title || title,
-      dataIndex: fe_id,
-      type: type,
-      customHeaderCell: () => {
-        return {
-          onClick: () => {
-            handleHeaderClick(fe_id, type);
-          },
-          style: {
-            cursor: "pointer",
-            // 根据是否选中设置不同颜色
-            color: isSelected ? "#1890ff" : "inherit",
-            // 可以添加其他选中样式
-            fontWeight: isSelected ? "bold" : "normal",
-          },
-        };
-      },
-    };
-  });
+      // 判断当前列是否为选中状态
+      const isSelected = props.selectedComponentId === fe_id;
+
+      return {
+        title: componentProps.title || title || "未命名组件",
+        dataIndex: fe_id,
+        type: type,
+        customHeaderCell: () => {
+          return {
+            onClick: () => {
+              handleHeaderClick(fe_id, type);
+            },
+            style: {
+              cursor: "pointer",
+              color: isSelected ? "#1890ff" : "inherit",
+              fontWeight: isSelected ? "bold" : "normal",
+            },
+          };
+        },
+      };
+    })
+    .filter(Boolean); // 过滤掉可能的null值
 });
 
 // 合并所有watch

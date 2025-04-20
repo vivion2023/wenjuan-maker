@@ -206,8 +206,64 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     },
     MOVE_COMPONENT(state, payload: { oldIndex: number; newIndex: number }) {
       const { oldIndex, newIndex } = payload;
-      const [movedItem] = state.componentList.splice(oldIndex, 1); // 先删除索引2的元素
-      state.componentList.splice(newIndex, 0, movedItem); // 再插入到索引0
+
+      // 获取可见组件列表
+      const visibleComponentList = state.componentList.filter(
+        (c) => !c.isHidden
+      );
+
+      // 1. 获取要移动的组件在可见列表中的信息
+      const movingComponent = visibleComponentList[oldIndex];
+
+      // 2. 找到要移动的组件在完整列表中的索引
+      const actualOldIndex = state.componentList.findIndex(
+        (c) => c.fe_id === movingComponent.fe_id
+      );
+
+      // 3. 确定目标位置
+      let actualNewIndex;
+
+      // 特殊情况处理：移动到列表的最后
+      if (newIndex >= visibleComponentList.length - 1) {
+        // 找到最后一个可见组件在完整列表中的位置
+        const lastVisibleIndex = state.componentList.findIndex(
+          (c) =>
+            c.fe_id ===
+            visibleComponentList[visibleComponentList.length - 1].fe_id
+        );
+        actualNewIndex = lastVisibleIndex + 1;
+      }
+      // 特殊情况处理：移动到列表的最前面
+      else if (newIndex === 0) {
+        // 找到第一个可见组件在完整列表中的位置
+        actualNewIndex = state.componentList.findIndex(
+          (c) => c.fe_id === visibleComponentList[0].fe_id
+        );
+      }
+      // 一般情况：移动到列表中间位置
+      else {
+        // 找到目标位置的组件在完整列表中的索引
+        const targetComponent = visibleComponentList[newIndex];
+        actualNewIndex = state.componentList.findIndex(
+          (c) => c.fe_id === targetComponent.fe_id
+        );
+
+        // 如果是向下移动（索引变大），需要调整插入位置到目标组件之后
+        if (oldIndex < newIndex) {
+          actualNewIndex += 1;
+        }
+      }
+
+      // 4. 执行移动操作
+      const [removed] = state.componentList.splice(actualOldIndex, 1);
+      state.componentList.splice(
+        actualNewIndex > actualOldIndex ? actualNewIndex - 1 : actualNewIndex,
+        0,
+        removed
+      );
+
+      // 5. 确保被移动的组件仍然是选中状态
+      state.selectedId = removed.fe_id;
     },
   },
   actions: {
