@@ -22,3 +22,12 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
     { value: "item3", text: "选项3", checked: false },
   ],
 };
+
+// Define the type for a single stat item
+export type StatItem = {
+  name: string;
+  value: number;
+};
+
+// Define the type for checkbox stats (an array of stat items)
+export type QuestionCheckboxStatPropsType = StatItem[];

@@ -14,6 +14,7 @@ import QuestionRadioConf, {
 } from "./QuestionRadio/index";
 import QuestionCheckboxConf, {
   QuestionCheckboxPropsType,
+  QuestionCheckboxStatPropsType,
 } from "./QuestionCheckbox/index";
 import { DefineComponent } from "vue";
 import QuestionTextareaConf, {
@@ -56,7 +57,9 @@ const componentConfList: ComponentConfType[] = [
 ];
 
 // 组件的统计类型
-export type ComponentStatPropsType = QuestionRadioStatPropsType;
+export type ComponentStatPropsType =
+  | QuestionRadioStatPropsType
+  | QuestionCheckboxStatPropsType;
 
 // 组件分组
 export const componentConfGroup = [

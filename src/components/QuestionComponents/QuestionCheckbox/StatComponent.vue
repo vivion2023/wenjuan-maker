@@ -19,24 +19,30 @@ import { Typography } from "ant-design-vue";
 const { Title } = Typography;
 
 import * as echarts from "echarts/core";
-import { PieChart } from "echarts/charts";
+import { BarChart } from "echarts/charts";
 import {
   TooltipComponent,
   GridComponent,
   LegendComponent,
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
-import { QuestionRadioStatPropsType } from "./interface";
+import { QuestionCheckboxStatPropsType } from "./interface";
 import { useResizeObserver } from "@vueuse/core";
 
 const props = defineProps<{
-  stat?: QuestionRadioStatPropsType;
+  stat?: QuestionCheckboxStatPropsType;
 }>();
 
-const pieData = computed(() => props.stat);
+const categoryData = computed(() => {
+  return props.stat?.map((item) => item.name) || [];
+});
+
+const valueData = computed(() => {
+  return props.stat?.map((item) => item.value) || [];
+});
 
 echarts.use([
-  PieChart,
+  BarChart,
   TooltipComponent,
   GridComponent,
   LegendComponent,
@@ -66,29 +72,38 @@ useResizeObserver(chartRef, () => {
 const getOption = () => {
   return {
     tooltip: {
-      trigger: "item",
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
     },
     legend: {
       orient: "vertical",
       left: "left",
     },
-    label: {
-      show: true,
-      formatter: "{b} {d}%", // {b}是name，{d}是百分比，{c}是value
+    xAxis: {
+      type: "category",
+      data: categoryData.value,
+      axisLabel: {
+        interval: 0,
+      },
+    },
+    yAxis: {
+      type: "value",
     },
     series: [
       {
         name: "统计",
-        type: "pie",
+        type: "bar",
         radius: "40%",
-        data: pieData.value,
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
-          },
-        },
+        data: valueData.value,
+        // emphasis: {
+        //   itemStyle: {
+        //     shadowBlur: 10,
+        //     shadowOffsetX: 0,
+        //     shadowColor: "rgba(0, 0, 0, 0.5)",
+        //   },
+        // },
       },
     ],
   };

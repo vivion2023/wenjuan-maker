@@ -6,8 +6,7 @@ import QuestionRadioComponent from "./QuestionRadioComponent.vue";
 import PropComponent from "./PropComponent.vue";
 import { QuestionRadioDefaultProps } from "./interface";
 import StatComponent from "./StatComponent.vue";
-import { QuestionRadioStatPropsType } from "./interface";
-export type { QuestionRadioStatPropsType };
+export type { QuestionRadioStatPropsType } from "./interface";
 export type { QuestionRadioPropsType } from "./interface";
 
 export default {
