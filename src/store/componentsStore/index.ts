@@ -273,7 +273,7 @@ const componentsModule: Module<ComponentsStateType, StateType> = {
     changeSelectedID({ commit }, payload: { selectedId: string }) {
       commit("CHANGE_SELECTID", payload);
     },
-    initHistory({ commit, state }) {
+    initHistory({ state }) {
       // 初始化数组
       if (!state.history) {
         state.history = [];

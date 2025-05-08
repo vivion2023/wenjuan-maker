@@ -1,8 +1,10 @@
 import { ref, UnwrapRef } from "vue";
 
-type Service<T, P extends any[]> = (...args: P) => Promise<T>;
+type Service<T, P extends unknown[]> = (...args: P) => Promise<T>;
 
-export function useRequest<T, P extends any[] = []>(service: Service<T, P>) {
+export function useRequest<T, P extends unknown[] = []>(
+  service: Service<T, P>
+) {
   const data = ref<T | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
