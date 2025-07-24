@@ -1,31 +1,10 @@
-# Vue TypeScript List 项目
+# wenjuan-maker
 
-一个基于 Vue 3 + TypeScript + Element Plus 构建的现代化前端应用项目。
+可视化问卷调查前端项目
 
-## 🚀 技术栈
+## Project setup
 
-- **框架**: Vue 3.2.13 (Composition API)
-- **语言**: TypeScript 5.8.3
-- **构建工具**: Vue CLI 5.0
-- **UI 组件库**:
-  - Element Plus 2.9.7
-  - Ant Design Vue 4.2.6
-- **状态管理**:、
-  - Vuex 4.1.0
-- **路由**: Vue Router 4.5.0
-- **工具库**:
-  - VueUse 13.1.0
-  - Lodash-es 4.17.21
-  - Axios 1.8.3
-- **图表**: ECharts 5.6.0
-- **其他功能**:
-  - 拖拽: vue-draggable-plus
-  - 二维码: vue-qr
-  - 模拟数据: MockJS
-
-## 📦 项目安装
-
-```bash
+```
 npm install
 ```
 
@@ -55,6 +34,13 @@ npm run build
 - ✅ 拖拽交互
 - ✅ 二维码生成
 - ✅ ESLint + Prettier 代码规范
+
+## ✨ 核心功能
+
+- **可视化问卷编辑**：通过拖拽组件（如输入框、单选、多选等）自由设计问卷。
+- **问卷管理**：提供问卷的列表、标星、回收站等功能，方便管理。
+- **数据统计与分析**：自动收集答卷数据，并生成图表进行可视化分析。
+- **用户系统**：支持完整的用户注册和登录流程。
 
 ## 📁 项目结构
 
